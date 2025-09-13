@@ -18,7 +18,7 @@ public class ScanTargetRadarAction extends AbstractRadarAction {
     public RadarAction action() {
         final IBot bot = commander.getBot();
         final EnemyState enemy = commander.getRadarOperator().getEnemyState(enemyId);
-        if (enemy == null || bot.getTurnNumber() - enemy.scandTurnNum > 10) {
+        if (enemy == null || bot.getTurnNumber() - enemy.scandTurnNum > 8) {
             this.turnRadarDegree = 360;
             return null;
         }

@@ -20,11 +20,4 @@ public class Util {
         }
         return new double[] {newX, newY};
     }
-
-    public static int calcNextFireTurnNum(double gunHeat, double coolingRate) {
-        if (gunHeat <= 0) {
-            return 0;
-        }
-        return (int) Math.ceil(gunHeat / coolingRate);
-    }
 }

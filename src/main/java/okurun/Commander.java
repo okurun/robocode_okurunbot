@@ -10,7 +10,7 @@ import okurun.radaroperator.RadarOperator;
 import okurun.radaroperator.action.RadarAction;
 
 public interface Commander {
-    double BODY_SIZE = 50;
+    double BODY_SIZE = 36;
 
     void init(IBot bot);
 
