@@ -25,16 +25,19 @@ public class SimplePredictModel extends PredictModel {
             );
         newPos = arenaMap.keepPositionInArena(newPos[0], newPos[1], enemyState.x, enemyState.y);
         double newHeading = enemyState.heading + turnDegree;
+        prevPos = newPos;
         if (predictTurnNum > 1) {
             for (int i = enemyState.scandTurnNum + 2; i <= predictTurnNum; i++) {
+                final double[] tempPos = newPos;
                 newPos = Util.calcPosition(
                     newPos[0], newPos[1],
                     newHeading, enemyState.velocity,
                     turnDegree,
                     1
                 );
-                newPos = arenaMap.keepPositionInArena(newPos[0], newPos[1], enemyState.x, enemyState.y);
+                newPos = arenaMap.keepPositionInArena(newPos[0], newPos[1], prevPos[0], prevPos[1]);
                 newHeading += turnDegree;
+                prevPos = tempPos;
             }
         }
         return new PredictData(
