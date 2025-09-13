@@ -1,18 +1,18 @@
 package okurun.predictor;
 
 public class Util {
-    public static double[] calcPosition(double x, double y, double heading, double velocity, int turnNum) {
+    public static double[] calcPosition(double x, double y, double heading, double velocity, int diffTurnNum) {
         final double rad = Math.toRadians(heading);
-        final double newX = x + velocity * Math.cos(rad) * turnNum;
-        final double newY = y + velocity * Math.sin(rad) * turnNum;
+        final double newX = x + velocity * Math.cos(rad) * diffTurnNum;
+        final double newY = y + velocity * Math.sin(rad) * diffTurnNum;
         return new double[] {newX, newY};
     }
 
-    public static double[] calcPosition(double x, double y, double heading, double velocity, double turnDegree, int turnNum) {
+    public static double[] calcPosition(double x, double y, double heading, double velocity, double turnDegree, int diffTurnNum) {
         double newX = x;
         double newY = y;
         double newHeading = heading + turnDegree;
-        for (int i = 0; i < turnNum; i++) {
+        for (int i = 0; i < diffTurnNum; i++) {
             final double[] pos = calcPosition(newX, newY, newHeading, velocity, 1);
             newX = pos[0];
             newY = pos[1];
