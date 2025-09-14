@@ -119,6 +119,7 @@ public class TankCommander implements Commander {
         gunner.onConnected(connectedEvent);
         driver.onConnected(connectedEvent);
         BattleManager.getInstance().onConnected(connectedEvent);
+        Predictor.getInstance().onConnected(connectedEvent);
     }
 
     @Override
@@ -127,6 +128,7 @@ public class TankCommander implements Commander {
         gunner.onDisconnected(disconnectedEvent);
         driver.onDisconnected(disconnectedEvent);
         BattleManager.getInstance().onDisconnected(disconnectedEvent);
+        Predictor.getInstance().onDisconnected(disconnectedEvent);
     }
 
     @Override
@@ -135,6 +137,7 @@ public class TankCommander implements Commander {
         gunner.onConnectionError(connectionErrorEvent);
         driver.onConnectionError(connectionErrorEvent);
         BattleManager.getInstance().onConnectionError(connectionErrorEvent);
+        Predictor.getInstance().onConnectionError(connectionErrorEvent);
     }
 
     @Override
@@ -143,7 +146,7 @@ public class TankCommander implements Commander {
         gunner.onGameStarted(gameStartedEvent);
         driver.onGameStarted(gameStartedEvent);
         BattleManager.getInstance().onGameStarted(gameStartedEvent);
-        Predictor.getInstance().reset();
+        Predictor.getInstance().onGameStarted(gameStartedEvent);
     }
 
     @Override
@@ -152,6 +155,7 @@ public class TankCommander implements Commander {
         gunner.onGameEnded(gameEndedEvent);
         driver.onGameEnded(gameEndedEvent);
         BattleManager.getInstance().onGameEnded(gameEndedEvent);
+        Predictor.getInstance().onGameEnded(gameEndedEvent);
     }
 
     @Override
@@ -160,6 +164,7 @@ public class TankCommander implements Commander {
         gunner.onRoundStarted(roundStartedEvent);
         driver.onRoundStarted(roundStartedEvent);
         BattleManager.getInstance().onRoundStarted(roundStartedEvent);
+        Predictor.getInstance().onRoundStarted(roundStartedEvent);
     }
 
     @Override
@@ -168,7 +173,7 @@ public class TankCommander implements Commander {
         gunner.onRoundEnded(roundEndedEvent);
         driver.onRoundEnded(roundEndedEvent);
         BattleManager.getInstance().onRoundEnded(roundEndedEvent);
-        System.out.println(Predictor.getInstance().toString());
+        Predictor.getInstance().onRoundEnded(roundEndedEvent);
     }
 
     @Override
@@ -177,6 +182,7 @@ public class TankCommander implements Commander {
         gunner.onTick(tickEvent);
         driver.onTick(tickEvent);
         BattleManager.getInstance().onTick(tickEvent);
+        Predictor.getInstance().onTick(tickEvent);
     }
 
     @Override
@@ -185,6 +191,7 @@ public class TankCommander implements Commander {
         gunner.onBotDeath(botDeathEvent);
         driver.onBotDeath(botDeathEvent);
         BattleManager.getInstance().onBotDeath(botDeathEvent);
+        Predictor.getInstance().onBotDeath(botDeathEvent);
     }
 
     @Override
@@ -193,6 +200,7 @@ public class TankCommander implements Commander {
         gunner.onDeath(deathEvent);
         driver.onDeath(deathEvent);
         BattleManager.getInstance().onDeath(deathEvent);
+        Predictor.getInstance().onDeath(deathEvent);
     }
 
     @Override
@@ -201,6 +209,7 @@ public class TankCommander implements Commander {
         gunner.onHitBot(botHitBotEvent);
         driver.onHitBot(botHitBotEvent);
         BattleManager.getInstance().onHitBot(botHitBotEvent);
+        Predictor.getInstance().onHitBot(botHitBotEvent);
     }
 
     @Override
@@ -209,6 +218,7 @@ public class TankCommander implements Commander {
         gunner.onHitWall(botHitWallEvent);
         driver.onHitWall(botHitWallEvent);
         BattleManager.getInstance().onHitWall(botHitWallEvent);
+        Predictor.getInstance().onHitWall(botHitWallEvent);
     }
 
     @Override
@@ -217,6 +227,7 @@ public class TankCommander implements Commander {
         gunner.onBulletFired(bulletFiredEvent);
         driver.onBulletFired(bulletFiredEvent);
         BattleManager.getInstance().onBulletFired(bulletFiredEvent, this);
+        Predictor.getInstance().onBulletFired(bulletFiredEvent, this);
         targetEnemyId.set(tactic.getTargetEnemyId());
     }
 
@@ -226,6 +237,7 @@ public class TankCommander implements Commander {
         gunner.onHitByBullet(hitByBulletEvent);
         driver.onHitByBullet(hitByBulletEvent);
         BattleManager.getInstance().onHitByBullet(hitByBulletEvent);
+        Predictor.getInstance().onHitByBullet(hitByBulletEvent);
     }
 
     @Override
@@ -234,6 +246,7 @@ public class TankCommander implements Commander {
         gunner.onBulletHit(bulletHitBotEvent);
         driver.onBulletHit(bulletHitBotEvent);
         BattleManager.getInstance().onBulletHit(bulletHitBotEvent);
+        Predictor.getInstance().onBulletHit(bulletHitBotEvent);
     }
 
     @Override
@@ -242,6 +255,7 @@ public class TankCommander implements Commander {
         gunner.onBulletHitBullet(bulletHitBulletEvent);
         driver.onBulletHitBullet(bulletHitBulletEvent);
         BattleManager.getInstance().onBulletHitBullet(bulletHitBulletEvent);
+        Predictor.getInstance().onBulletHitBullet(bulletHitBulletEvent);
     }
 
     @Override
@@ -250,6 +264,7 @@ public class TankCommander implements Commander {
         gunner.onBulletHitWall(bulletHitWallEvent);
         driver.onBulletHitWall(bulletHitWallEvent);
         BattleManager.getInstance().onBulletHitWall(bulletHitWallEvent);
+        Predictor.getInstance().onBulletHitWall(bulletHitWallEvent);
     }
 
     @Override
@@ -258,6 +273,7 @@ public class TankCommander implements Commander {
         gunner.onScannedBot(scannedBotEvent);
         driver.onScannedBot(scannedBotEvent);
         BattleManager.getInstance().onScannedBot(scannedBotEvent);
+        Predictor.getInstance().onScannedBot(scannedBotEvent);
     }
 
     @Override
@@ -266,6 +282,7 @@ public class TankCommander implements Commander {
         gunner.onSkippedTurn(skippedTurnEvent);
         driver.onSkippedTurn(skippedTurnEvent);
         BattleManager.getInstance().onSkippedTurn(skippedTurnEvent);
+        Predictor.getInstance().onSkippedTurn(skippedTurnEvent);
     }
 
     @Override
@@ -274,6 +291,7 @@ public class TankCommander implements Commander {
         gunner.onWonRound(wonRoundEvent);
         driver.onWonRound(wonRoundEvent);
         BattleManager.getInstance().onWonRound(wonRoundEvent);
+        Predictor.getInstance().onWonRound(wonRoundEvent);
     }
 
     @Override
@@ -282,6 +300,7 @@ public class TankCommander implements Commander {
         gunner.onCustomEvent(customEvent);
         driver.onCustomEvent(customEvent);
         BattleManager.getInstance().onCustomEvent(customEvent);
+        Predictor.getInstance().onCustomEvent(customEvent);
     }
 
     @Override
@@ -290,5 +309,6 @@ public class TankCommander implements Commander {
         gunner.onTeamMessage(teamMessageEvent);
         driver.onTeamMessage(teamMessageEvent);
         BattleManager.getInstance().onTeamMessage(teamMessageEvent);
+        Predictor.getInstance().onTeamMessage(teamMessageEvent);
     }
 }

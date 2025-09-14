@@ -38,6 +38,14 @@ public class BattleManager {
         bulletDataMap.clear();
     }
 
+    public EnemyBattleData getEnemyBattleData(int enemyId) {
+        return enemyBattleDataMap.get(enemyId);
+    }
+
+    public BulletData getBulletData(int bulletId) {
+        return bulletDataMap.get(bulletId);
+    }
+
     public void onConnected(ConnectedEvent connectedEvent) {
     }
 
@@ -89,9 +97,6 @@ public class BattleManager {
             bulletFiredEvent.getTurnNumber(),
             BulletData.HitState.IN_FLIGHT
         ));
-        if (shootingTarget.predictModel != null) {
-            shootingTarget.predictModel.incrementFiredCount();
-        }
         final EnemyBattleData enemyBattleData = enemyBattleDataMap.get(shootingTarget.enemyId);
         if (enemyBattleData != null) {
             enemyBattleData.incrementTargetedCount();
@@ -116,13 +121,6 @@ public class BattleManager {
                 ? BulletData.HitState.HIT
                 : BulletData.HitState.HIT_OTHER
         ));
-        if (bulletData.shootingTarget.predictModel != null) {
-            if (bulletData.shootingTarget.enemyId == enemyId) {
-                bulletData.shootingTarget.predictModel.incrementHitCount();
-            } else {
-                bulletData.shootingTarget.predictModel.incrementNoCount();
-            }
-        }
         final EnemyBattleData enemyBattleData = enemyBattleDataMap.get(bulletData.shootingTarget.enemyId);
         if (enemyBattleData != null) {
             if (bulletData.shootingTarget.enemyId == enemyId) {
@@ -145,9 +143,6 @@ public class BattleManager {
             bulletData.firedTurnNum,
             BulletData.HitState.HIT_BULLET
         ));
-        if (bulletData.shootingTarget.predictModel != null) {
-            bulletData.shootingTarget.predictModel.incrementNoCount();
-        }
         final EnemyBattleData enemyBattleData = enemyBattleDataMap.get(bulletData.shootingTarget.enemyId);
         if (enemyBattleData != null) {
             enemyBattleData.incrementNoCount();
@@ -166,9 +161,6 @@ public class BattleManager {
             bulletData.firedTurnNum,
             BulletData.HitState.MISS
         ));
-        if (bulletData.shootingTarget.predictModel != null) {
-            bulletData.shootingTarget.predictModel.incrementMissCount();
-        }
         final EnemyBattleData enemyBattleData = enemyBattleDataMap.get(bulletData.shootingTarget.enemyId);
         if (enemyBattleData != null) {
             enemyBattleData.incrementMissCount();

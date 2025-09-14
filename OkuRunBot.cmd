@@ -1,1 +1,2 @@
-java -cp ../lib/* OkuRunBot.java >nul
+./gradlew build
+./gradlew run
