@@ -41,8 +41,17 @@ public class Predictor {
     }
 
     public PredictData predict(EnemyState enemyState, int predictTurnNum) {
+        final PredictModel unUserbleModel = predictModels.get(enemyState.enemyId).values().stream()
+            .min(Comparator.comparingInt(pm -> pm.getFiredCount()))
+            .get();
+        if (unUserbleModel.getFiredCount() < 10) {
+            PredictData predictData = unUserbleModel.predict(enemyState, predictTurnNum);
+            if (predictData != null) {
+                return predictData;
+            }
+        }
         final List<PredictModel> models = predictModels.get(enemyState.enemyId).values().stream()
-            .sorted(Comparator.comparingDouble(PredictModel::getMissRate))
+            .sorted(Comparator.comparingDouble(pm -> Math.min(pm.getMissRate(), 0.9)))
             .toList();
         for (PredictModel model : models) {
             final PredictData data = model.predict(enemyState, predictTurnNum);
