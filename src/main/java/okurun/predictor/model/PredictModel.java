@@ -63,10 +63,10 @@ public abstract class PredictModel {
     @Override
     public String toString() {
         return this.getClass().getSimpleName() + "{" +
-            "firedCount=" + firedCount +
-            ", hitCount=" + hitCount +
-            ", missCount=" + missCount +
-            ", noCount=" + noCount +
+            "firedCount=" + firedCount.get() +
+            ", hitCount=" + hitCount.get() +
+            ", missCount=" + missCount.get() +
+            ", noCount=" + noCount.get() +
             ", hitRate=" + getHitRate() +
             ", missRate=" + getMissRate() +
             '}';

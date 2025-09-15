@@ -1,18 +1,22 @@
 package okurun.gunner;
 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 import dev.robocode.tankroyale.botapi.IBot;
 import dev.robocode.tankroyale.botapi.events.*;
 import okurun.Commander;
 import okurun.gunner.action.GunAction;
 
 public class Gunner {
-    public ShootingTarget shootingTarget;
+    private final Map<Integer, ShootingTarget> shootingTargets = new ConcurrentHashMap<>();
 
     private Commander commander;
     private GunAction action;
     
     public void init(Commander commander) {
         this.commander = commander;
+        shootingTargets.clear();
     }
 
     public void action() {
@@ -20,19 +24,25 @@ public class Gunner {
             action = commander.getNextGunAction();
         }
         final GunAction nextAction = action.action();
-        shootingTarget = action.getShootingTarget();
+        final ShootingTarget shootingTarget = action.getShootingTarget();
         final IBot bot = commander.getBot();
         if (shootingTarget == null) {
             bot.setFire(0);
         } else {
             bot.setTurnGunLeft(bot.gunBearingTo(shootingTarget.x, shootingTarget.y));
             bot.setFire(shootingTarget.firePower);
+            shootingTargets.put(bot.getTurnNumber(), shootingTarget);
         }
+        shootingTargets.remove(bot.getTurnNumber() - 2);
         action = nextAction;
     }
 
     public void setAction(GunAction action) {
         this.action = action;
+    }
+
+    public ShootingTarget getShootingTarget(int turnNumber) {
+        return shootingTargets.get(turnNumber);
     }
 
     public void onConnected(ConnectedEvent connectedEvent) {

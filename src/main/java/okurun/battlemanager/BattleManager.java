@@ -86,7 +86,7 @@ public class BattleManager {
     }
 
     public void onBulletFired(BulletFiredEvent bulletFiredEvent, Commander commander) {
-        final ShootingTarget shootingTarget = commander.getGunner().shootingTarget;
+        final ShootingTarget shootingTarget = commander.getGunner().getShootingTarget(bulletFiredEvent.getTurnNumber());
         if (shootingTarget == null) {
             return;
         }

@@ -32,6 +32,7 @@ public class NormalGunAction extends AbstractGunAction {
                 bot.getTurnNumber() + (int) Math.ceil(distance / bot.calcBulletSpeed(firePower)),
                 null
             );
+            System.out.println("####");
             return null;
         }
         shootingTarget = createShootingTarget();
@@ -42,18 +43,6 @@ public class NormalGunAction extends AbstractGunAction {
         final IBot bot = commander.getBot();
         final EnemyState targetEnemy = trigger.getTargetEnemy();
         final int nextFireTurnNum = trigger.getNextFireTurnNum();
-        if (nextFireTurnNum - bot.getTurnNumber() > 4) {
-            // 次の発射ターンが3より大きい場合
-            return new ShootingTarget(
-                targetEnemy.enemyId,
-                0, // 射撃しない
-                targetEnemy.x, targetEnemy.y, // 砲は敵に向ける
-                0,
-                nextFireTurnNum,
-                null
-            );
-        }
-
         final double firePower = trigger.getFirePower();
         final Predictor predictor = Predictor.getInstance();
         final double bulletSpeed = bot.calcBulletSpeed(firePower);
@@ -63,6 +52,7 @@ public class NormalGunAction extends AbstractGunAction {
             predictData = predictor.predict(targetEnemy, nextFireTurnNum + i);
             distance = bot.distanceTo(predictData.x, predictData.y);
             if (Math.abs(distance - (bulletSpeed * i)) < 10) {
+                System.out.println("%%%%");
                 return new ShootingTarget(
                     targetEnemy.enemyId,
                     firePower,

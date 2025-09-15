@@ -42,7 +42,7 @@ public class MovePatternPredictModel extends PredictModel {
     private List<MovePattern> extractMovePatterns(EnemyState enemyState) {
         List<MovePattern> patterns = new ArrayList<>();
         EnemyState current = enemyState;
-        while (current.previousState != null) {
+        while (current.previousState != null && patterns.size() < 10) {
             if (current.previousState.scandTurnNum == 0) {
                 break;
             }
@@ -51,7 +51,7 @@ public class MovePatternPredictModel extends PredictModel {
             patterns.add(new MovePattern(velocity, turnDegree));
             current = current.previousState;
         }
-        return patterns;
+        return patterns.reversed();
     }
 
     private static class MovePattern {

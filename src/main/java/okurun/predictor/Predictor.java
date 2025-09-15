@@ -4,7 +4,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import dev.robocode.tankroyale.botapi.IBot;
 import dev.robocode.tankroyale.botapi.events.*;
@@ -56,9 +55,18 @@ public class Predictor {
 
     @Override
     public String toString() {
-        return "Predictor{" +
-            "predictModels=\n\t" + predictModels.values().stream().map(pm -> pm.toString()).collect(Collectors.joining("\n\t")) +
-            '}';
+        StringBuilder sb = new StringBuilder("Predictor{\n");
+        for (Map.Entry<Integer, Map<String, PredictModel>> entry : predictModels.entrySet()) {
+            final int enemyId = entry.getKey();
+            sb.append("\tenemyId=").append(enemyId).append("{\n");
+            final Map<String, PredictModel> models = entry.getValue();
+            for (PredictModel pm : models.values()) {
+                sb.append("\t\t").append(pm.toString()).append("\n");
+            }
+            sb.append("\t}\n");
+        }
+        sb.append('}');
+        return sb.toString();
     }
 
     public void onConnected(ConnectedEvent connectedEvent) {
@@ -100,13 +108,17 @@ public class Predictor {
     }
 
     public void onBulletFired(BulletFiredEvent bulletFiredEvent, Commander commander) {
-        final ShootingTarget shootingTarget = commander.getGunner().shootingTarget;
+        final ShootingTarget shootingTarget = commander.getGunner().getShootingTarget(bulletFiredEvent.getTurnNumber());
         if (shootingTarget == null) {
+            System.out.println("@@@@");
             return;
         }
-        if (shootingTarget.predictModel != null) {
-            shootingTarget.predictModel.incrementFiredCount();
+        if (shootingTarget.predictModel == null) {
+            System.out.println("****");
+            return;
         }
+        shootingTarget.predictModel.incrementFiredCount();
+        System.out.println(shootingTarget.predictModel);
     }
 
     public void onHitByBullet(HitByBulletEvent hitByBulletEvent) {
@@ -119,12 +131,13 @@ public class Predictor {
         if (bulletData == null) {
             return;
         }
-        if (bulletData.shootingTarget.predictModel != null) {
-            if (bulletData.shootingTarget.enemyId == enemyId) {
-                bulletData.shootingTarget.predictModel.incrementHitCount();
-            } else {
-                bulletData.shootingTarget.predictModel.incrementNoCount();
-            }
+        if (bulletData.shootingTarget.predictModel == null) {
+            return;
+        }
+        if (bulletData.shootingTarget.enemyId == enemyId) {
+            bulletData.shootingTarget.predictModel.incrementHitCount();
+        } else {
+            bulletData.shootingTarget.predictModel.incrementNoCount();
         }
     }
 
@@ -134,9 +147,10 @@ public class Predictor {
         if (bulletData == null) {
             return;
         }
-        if (bulletData.shootingTarget.predictModel != null) {
-            bulletData.shootingTarget.predictModel.incrementNoCount();
+        if (bulletData.shootingTarget.predictModel == null) {
+            return;
         }
+        bulletData.shootingTarget.predictModel.incrementNoCount();
     }
 
     public void onBulletHitWall(BulletHitWallEvent bulletHitWallEvent) {
@@ -145,9 +159,10 @@ public class Predictor {
         if (bulletData == null) {
             return;
         }
-        if (bulletData.shootingTarget.predictModel != null) {
-            bulletData.shootingTarget.predictModel.incrementMissCount();
+        if (bulletData.shootingTarget.predictModel == null) {
+            return;
         }
+        bulletData.shootingTarget.predictModel.incrementMissCount();
     }
 
     public void onScannedBot(ScannedBotEvent scannedBotEvent) {
