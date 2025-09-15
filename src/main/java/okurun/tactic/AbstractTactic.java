@@ -60,7 +60,7 @@ public abstract class AbstractTactic implements TacticStrategy {
 
     @Override
     public DriveAction getNextDriveAction() {
-        return null;
+        return new ApproachEnemyDriveAction(commander, commander.getTargetEnemy(), 300);
     }
 
     protected abstract DriveAction getEmergencyDriveAction();

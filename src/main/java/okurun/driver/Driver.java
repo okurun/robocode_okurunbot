@@ -1,5 +1,6 @@
 package okurun.driver;
 
+import dev.robocode.tankroyale.botapi.IBot;
 import dev.robocode.tankroyale.botapi.events.*;
 import okurun.Commander;
 import okurun.driver.action.DriveAction;
@@ -16,6 +17,20 @@ public class Driver {
     }
 
     public void action() {
+        if (action == null) {
+            action = commander.getNextDriveAction();            
+        }
+        final DriveAction nextAction = action.action();
+        final IBot bot = commander.getBot();
+        bot.setTurnLeft(action.getTurnDegree());
+        bot.setForward(action.getForwardDistance());
+        bot.setMaxSpeed(consideringWallBrake(action.getMaxSpeed()));
+        action = nextAction;
+    }
+
+    private double consideringWallBrake(double maxSpeed) {
+        // TODO
+        return maxSpeed;
     }
 
     public void setAction(DriveAction action) {

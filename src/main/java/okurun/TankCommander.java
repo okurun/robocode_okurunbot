@@ -9,6 +9,7 @@ import dev.robocode.tankroyale.botapi.events.*;
 import okurun.arenamap.ArenaMap;
 import okurun.battlemanager.BattleManager;
 import okurun.driver.Driver;
+import okurun.driver.action.DriveAction;
 import okurun.gunner.Gunner;
 import okurun.gunner.action.GunAction;
 import okurun.predictor.Predictor;
@@ -87,6 +88,14 @@ public class TankCommander implements Commander {
     public GunAction getNextGunAction() {
         if (tactic != null) {
             return tactic.getNextGunAction();
+        }
+        return null;
+    }
+
+    @Override
+    public DriveAction getNextDriveAction() {
+        if (tactic != null) {
+            return tactic.getNextDriveAction();
         }
         return null;
     }

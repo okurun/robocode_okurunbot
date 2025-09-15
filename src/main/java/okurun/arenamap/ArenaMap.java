@@ -12,7 +12,6 @@ public class ArenaMap {
     private int height;
 
     private ArenaMap() {
-
     }
 
     public void init(int width, int height) {
@@ -26,6 +25,10 @@ public class ArenaMap {
 
     public int getHeight() {
         return height;
+    }
+
+    public double[] keepPositionInArena(double[] pos, double[] beforePos) {
+        return keepPositionInArena(pos[0], pos[1], beforePos[0], beforePos[1]);
     }
 
     public double[] keepPositionInArena(double x, double y, double beforeX, double beforeY) {

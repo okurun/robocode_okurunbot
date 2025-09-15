@@ -3,6 +3,7 @@ package okurun;
 import dev.robocode.tankroyale.botapi.IBot;
 import dev.robocode.tankroyale.botapi.events.*;
 import okurun.driver.Driver;
+import okurun.driver.action.DriveAction;
 import okurun.gunner.Gunner;
 import okurun.gunner.action.GunAction;
 import okurun.radaroperator.EnemyState;
@@ -22,11 +23,19 @@ public interface Commander {
 
     void setTargetEnemyId(int enemyId);
 
+    EnemyState getTargetEnemy();
+
     Gunner getGunner();
 
     RadarOperator getRadarOperator();
 
     Driver getDriver();
+
+    RadarAction getNextRadarAction();
+
+    GunAction getNextGunAction();
+
+    DriveAction getNextDriveAction();
 
     default void onConnected(ConnectedEvent connectedEvent) {
     }
@@ -93,10 +102,4 @@ public interface Commander {
 
     default void onTeamMessage(TeamMessageEvent teamMessageEvent) {
     }
-
-    RadarAction getNextRadarAction();
-
-    GunAction getNextGunAction();
-
-    EnemyState getTargetEnemy();
 }

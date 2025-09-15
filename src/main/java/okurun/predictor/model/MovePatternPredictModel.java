@@ -3,9 +3,9 @@ package okurun.predictor.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import okurun.Util;
 import okurun.arenamap.ArenaMap;
 import okurun.predictor.PredictData;
-import okurun.predictor.Util;
 import okurun.radaroperator.EnemyState;
 
 public class MovePatternPredictModel extends PredictModel {
@@ -16,19 +16,19 @@ public class MovePatternPredictModel extends PredictModel {
         if (movePatterns.size() < 10) {
             return null;
         }
-        double[] newPos = new double[] {enemyState.x, enemyState.y};
+        double[] newPos = enemyState.getPosition();
         double newHeading = enemyState.heading;
         double[] prevPos;
         if (enemyState.previousState == null) {
-            prevPos = new double[] {enemyState.x, enemyState.y};
+            prevPos = enemyState.getPosition();
         } else {
-            prevPos = new double[] {enemyState.previousState.x, enemyState.previousState.y};
+            prevPos = enemyState.previousState.getPosition();
         }
         for (int i = enemyState.scandTurnNum + 1; i <= predictTurnNum; i++) {
             final double[] tempPos = newPos;
             final MovePattern pattern = movePatterns.get(i % movePatterns.size());
-            newPos = Util.calcPosition(newPos[0], newPos[1], newHeading, pattern.velocity, pattern.turnDegree, 1);
-            newPos = arenaMap.keepPositionInArena(newPos[0], newPos[1], prevPos[0], prevPos[1]);
+            newPos = Util.calcPosition(newPos, newHeading, pattern.velocity, pattern.turnDegree, 1);
+            newPos = arenaMap.keepPositionInArena(newPos, prevPos);
             newHeading += pattern.turnDegree;
             prevPos = tempPos;
         }

@@ -40,6 +40,10 @@ public class EnemyState {
         return diffHeading / diffTurnNum;
     }
 
+    public double[] getPosition() {
+        return new double[]{x, y};
+    }
+
     @Override
     public String toString() {
         return "EnemyState{" +

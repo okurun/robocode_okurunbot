@@ -21,6 +21,10 @@ public class PredictData {
         this.model = model;
     }
 
+    public double[] getPosition() {
+        return new double[]{x, y};
+    }
+
     @Override
     public String toString() {
         return "PredictData{" +
