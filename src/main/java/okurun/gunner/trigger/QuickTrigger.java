@@ -29,6 +29,9 @@ public class QuickTrigger extends AbstractTrigger {
         final IBot bot = commander.getBot();
         final Predictor predictor = Predictor.getInstance();
         final PredictData currentPos = predictor.predict(targetEnemy, bot.getTurnNumber());
+        if (currentPos == null) {
+            return 0;
+        }
         final double distance = bot.distanceTo(currentPos.x, currentPos.y);
         if (distance < 90) {
             return Constants.MAX_FIREPOWER;

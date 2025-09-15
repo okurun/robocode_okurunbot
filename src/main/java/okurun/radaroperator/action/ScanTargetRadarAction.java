@@ -24,6 +24,10 @@ public class ScanTargetRadarAction extends AbstractRadarAction {
         }
         final Predictor predictor = Predictor.getInstance();
         final PredictData predictData = predictor.predict(enemy, bot.getTurnNumber());
+        if (predictData == null) {
+            this.turnRadarDegree = bot.radarBearingTo(enemy.x, enemy.y);
+            return null;
+        }
         double turnDegree = bot.radarBearingTo(predictData.x, predictData.y);
         if (turnDegree < 0) {
             turnDegree -= 20; // 少しオーバーランさせる

@@ -49,6 +49,9 @@ public class NormalGunAction extends AbstractGunAction {
         PredictData predictData = null;
         for (int i = 1; i < 50; i++) {
             predictData = predictor.predict(targetEnemy, nextFireTurnNum + i);
+            if (predictData == null) {
+                return null;
+            }
             distance = bot.distanceTo(predictData.x, predictData.y);
             if (Math.abs(distance - (bulletSpeed * i)) < 10) {
                 return new ShootingTarget(

@@ -13,8 +13,8 @@ public class MovePatternPredictModel extends PredictModel {
     public PredictData predict(EnemyState enemyState, int predictTurnNum) {
         final var arenaMap = ArenaMap.getInstance();
         List<MovePattern> movePatterns = extractMovePatterns(enemyState);
-        if (movePatterns.isEmpty()) {
-            return null; // Not enough data to predict
+        if (movePatterns.size() < 10) {
+            return null;
         }
         double[] newPos = new double[] {enemyState.x, enemyState.y};
         double newHeading = enemyState.heading;
