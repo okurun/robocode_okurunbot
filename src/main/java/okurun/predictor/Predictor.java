@@ -110,15 +110,12 @@ public class Predictor {
     public void onBulletFired(BulletFiredEvent bulletFiredEvent, Commander commander) {
         final ShootingTarget shootingTarget = commander.getGunner().getShootingTarget(bulletFiredEvent.getTurnNumber());
         if (shootingTarget == null) {
-            System.out.println("@@@@");
             return;
         }
         if (shootingTarget.predictModel == null) {
-            System.out.println("****");
             return;
         }
         shootingTarget.predictModel.incrementFiredCount();
-        System.out.println(shootingTarget.predictModel);
     }
 
     public void onHitByBullet(HitByBulletEvent hitByBulletEvent) {

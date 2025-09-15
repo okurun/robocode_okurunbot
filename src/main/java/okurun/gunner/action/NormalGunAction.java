@@ -32,7 +32,6 @@ public class NormalGunAction extends AbstractGunAction {
                 bot.getTurnNumber() + (int) Math.ceil(distance / bot.calcBulletSpeed(firePower)),
                 null
             );
-            System.out.println("####");
             return null;
         }
         shootingTarget = createShootingTarget();
@@ -52,7 +51,6 @@ public class NormalGunAction extends AbstractGunAction {
             predictData = predictor.predict(targetEnemy, nextFireTurnNum + i);
             distance = bot.distanceTo(predictData.x, predictData.y);
             if (Math.abs(distance - (bulletSpeed * i)) < 10) {
-                System.out.println("%%%%");
                 return new ShootingTarget(
                     targetEnemy.enemyId,
                     firePower,
