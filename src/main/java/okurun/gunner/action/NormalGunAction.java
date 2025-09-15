@@ -30,6 +30,7 @@ public class NormalGunAction extends AbstractGunAction {
                 targetEnemy.x, targetEnemy.y,
                 distance,
                 bot.getTurnNumber() + (int) Math.ceil(distance / bot.calcBulletSpeed(firePower)),
+                trigger.getNextFireTurnNum(),
                 null
             );
             return null;
@@ -60,6 +61,7 @@ public class NormalGunAction extends AbstractGunAction {
                     predictData.x, predictData.y,
                     distance,
                     nextFireTurnNum + i,
+                    nextFireTurnNum,
                     predictData.model
                 );
             }

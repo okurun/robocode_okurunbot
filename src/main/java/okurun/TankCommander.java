@@ -15,8 +15,7 @@ import okurun.predictor.Predictor;
 import okurun.radaroperator.EnemyState;
 import okurun.radaroperator.RadarOperator;
 import okurun.radaroperator.action.RadarAction;
-import okurun.tactic.MiddleRangeTactic;
-import okurun.tactic.TacticStrategy;
+import okurun.tactic.*;
 
 public class TankCommander implements Commander {
     private final AtomicInteger targetEnemyId = new AtomicInteger(0);
@@ -39,7 +38,7 @@ public class TankCommander implements Commander {
         driver.init(this);
 
         tactics.put(MiddleRangeTactic.class.getName(), new MiddleRangeTactic(this));
-    }
+        tactics.put(SurvivalTactic.class.getName(), new SurvivalTactic(this));}
 
     @Override
     public IBot getBot() {
@@ -110,6 +109,9 @@ public class TankCommander implements Commander {
     }
 
     private TacticStrategy getNextTactic() {
+        if (radarOperator.getEnemyCount() > 1) {
+            return tactics.get(SurvivalTactic.class.getName());
+        }
         return tactics.get(MiddleRangeTactic.class.getName());
     }
 

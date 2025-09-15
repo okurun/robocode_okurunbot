@@ -1,7 +1,10 @@
 package okurun.radaroperator;
 
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import dev.robocode.tankroyale.botapi.IBot;
@@ -11,6 +14,7 @@ import okurun.radaroperator.action.RadarAction;
 
 public class RadarOperator {
     private final Map<Integer, EnemyState> enemyStates = new ConcurrentHashMap<>();
+    private final Set<Integer> deathBots = Collections.synchronizedSet(new HashSet<>());
 
     private Commander commander;
     private RadarAction action;
@@ -21,6 +25,7 @@ public class RadarOperator {
     public void init(Commander commander) {
         this.commander = commander;
         enemyStates.clear();
+        deathBots.clear();
         final IBot bot = commander.getBot();
         for (int i = 1; i <= bot.getEnemyCount() + 1; i++) {
             if (i == bot.getMyId()) continue;
@@ -46,12 +51,13 @@ public class RadarOperator {
     }
 
     public int getEnemyCount() {
-        return enemyStates.size();
+        return getEnemyStates().size();
     }
 
     public Map<Integer, EnemyState> getEnemyStates() {
         return enemyStates.values().stream()
             .filter(e -> e.scandTurnNum > 0)
+            .filter(e -> !deathBots.contains(e.enemyId))
             .collect(ConcurrentHashMap::new, (m, e) -> m.put(e.enemyId, e), ConcurrentHashMap::putAll);
     }
 
@@ -87,7 +93,9 @@ public class RadarOperator {
     }
 
     public void onBotDeath(BotDeathEvent botDeathEvent) {
-        enemyStates.remove(botDeathEvent.getVictimId());
+        final int enemyId = botDeathEvent.getVictimId();
+        enemyStates.remove(enemyId);
+        deathBots.add(enemyId);
     }
 
     public void onDeath(DeathEvent deathEvent) {
