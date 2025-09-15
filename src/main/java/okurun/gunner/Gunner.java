@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import dev.robocode.tankroyale.botapi.IBot;
 import dev.robocode.tankroyale.botapi.events.*;
 import okurun.Commander;
+import okurun.Util;
 import okurun.gunner.action.GunAction;
 
 public class Gunner {
@@ -28,9 +29,15 @@ public class Gunner {
         final IBot bot = commander.getBot();
         if (shootingTarget == null) {
             bot.setFire(0);
+            bot.setBulletColor(Util.WHITE_COLOR);
         } else {
             bot.setTurnGunLeft(bot.gunBearingTo(shootingTarget.x, shootingTarget.y));
             bot.setFire(shootingTarget.firePower);
+            if (shootingTarget.predictModel == null) {
+                bot.setBulletColor(Util.WHITE_COLOR);
+            } else {
+                bot.setBulletColor(shootingTarget.predictModel.getBulletColor());
+            }
             shootingTargets.put(bot.getTurnNumber(), shootingTarget);
         }
         shootingTargets.remove(bot.getTurnNumber() - 2);

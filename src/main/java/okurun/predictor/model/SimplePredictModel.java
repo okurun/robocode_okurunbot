@@ -1,5 +1,6 @@
 package okurun.predictor.model;
 
+import dev.robocode.tankroyale.botapi.graphics.Color;
 import okurun.Util;
 import okurun.arenamap.ArenaMap;
 import okurun.predictor.PredictData;
@@ -34,5 +35,10 @@ public class SimplePredictModel extends PredictModel {
             enemyState.velocity, newHeading, turnDegree,
             predictTurnNum, this
         );
+    }
+
+    @Override
+    public Color getBulletColor() {
+        return Util.RED_COLOR;
     }
 }

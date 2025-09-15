@@ -3,6 +3,7 @@ package okurun.predictor.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import dev.robocode.tankroyale.botapi.graphics.Color;
 import okurun.Util;
 import okurun.arenamap.ArenaMap;
 import okurun.predictor.PredictData;
@@ -62,5 +63,10 @@ public class MovePatternPredictModel extends PredictModel {
             this.velocity = velocity;
             this.turnDegree = turnDegree;
         }
+    }
+
+    @Override
+    public Color getBulletColor() {
+        return Util.GREEN_COLOR;
     }
 }

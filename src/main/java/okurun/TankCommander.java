@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import dev.robocode.tankroyale.botapi.IBot;
 import dev.robocode.tankroyale.botapi.events.*;
+import okurun.Util.ToggleColor;
 import okurun.arenamap.ArenaMap;
 import okurun.battlemanager.BattleManager;
 import okurun.driver.Driver;
@@ -114,6 +115,7 @@ public class TankCommander implements Commander {
             targetEnemyId.set(tactic.getTargetEnemyId());
         }
         tactic.action();
+        ToggleColor.toggle();
         bot.go();
     }
 

@@ -1,11 +1,44 @@
 package okurun;
 
+import dev.robocode.tankroyale.botapi.graphics.Color;
+
 public class Util {
     public static enum Direction {
         LEFT(1), RIGHT(-1);
         public final int value;
         Direction(int value) { this.value = value; }
     }
+
+    public static class ToggleColor {
+        private static boolean isA = true;
+        public static void toggle() { isA = !isA; }
+
+        private final Color colorA;
+        private final Color colorB;
+
+        public ToggleColor(Color colorA, Color colorB) {
+            this.colorA = colorA;
+            this.colorB = colorB;
+        }
+
+        public Color get() {
+            if (isA) {
+                return colorA;
+            } else {
+                return colorB;
+            }
+        }
+    }
+
+    public static Color BASE_COLOR = Color.CYAN;
+    public static Color LIGHT_COLOR = Color.LIGHT_CYAN;
+    public static Color DARK_COLOR = Color.DARK_CYAN;
+    public static Color WHITE_COLOR = Color.WHITE;
+    public static Color YELLOW_COLOR = Color.YELLOW;
+    public static Color ORANGE_COLOR = Color.ORANGE;
+    public static Color RED_COLOR = Color.RED;
+    public static Color BLUE_COLOR = Color.BLUE;
+    public static Color GREEN_COLOR = Color.GREEN;
 
     public static double[] calcPosition(double[] pos, double heading, double velocity, int diffTurnNum) {
         return calcPosition(pos[0], pos[1], heading, velocity, diffTurnNum);

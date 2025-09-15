@@ -2,6 +2,7 @@ package okurun.predictor.model;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
+import dev.robocode.tankroyale.botapi.graphics.Color;
 import okurun.predictor.PredictData;
 import okurun.radaroperator.EnemyState;
 
@@ -73,4 +74,5 @@ public abstract class PredictModel {
     }
 
     abstract public PredictData predict(EnemyState enemyState, int predictTurnNum);
+    abstract public Color getBulletColor();
 }
