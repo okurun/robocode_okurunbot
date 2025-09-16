@@ -3,6 +3,7 @@ package okurun.tactic;
 import dev.robocode.tankroyale.botapi.events.*;
 import okurun.driver.action.DriveAction;
 import okurun.gunner.action.GunAction;
+import okurun.gunner.trigger.GunTrigger;
 import okurun.radaroperator.action.RadarAction;
 
 public interface TacticStrategy {
@@ -13,6 +14,8 @@ public interface TacticStrategy {
     RadarAction getNextRadarAction();
 
     GunAction getNextGunAction();
+
+    GunTrigger getNextGunTrigger();
 
     DriveAction getNextDriveAction();
 

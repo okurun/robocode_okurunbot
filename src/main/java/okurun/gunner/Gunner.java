@@ -8,11 +8,13 @@ import dev.robocode.tankroyale.botapi.events.*;
 import okurun.Commander;
 import okurun.Util;
 import okurun.gunner.action.GunAction;
+import okurun.gunner.trigger.GunTrigger;
 
 public class Gunner {
     private final Map<Integer, ShootingTarget> shootingTargets = new ConcurrentHashMap<>();
 
     private Commander commander;
+    private GunTrigger trigger;
     private GunAction action;
     
     public void init(Commander commander) {
@@ -21,11 +23,14 @@ public class Gunner {
     }
 
     public void action() {
-        if (action == null) {
-            action = commander.getNextGunAction();
+        if (this.action == null) {
+            this.action = commander.getNextGunAction();
         }
-        final GunAction nextAction = action.action();
-        final ShootingTarget shootingTarget = action.getShootingTarget();
+        if (this.trigger == null) {
+            this.trigger = commander.getNextGunTrigger();
+        }
+        final GunAction nextAction = this.action.action(this.trigger);
+        final ShootingTarget shootingTarget = this.action.getShootingTarget();
         final IBot bot = commander.getBot();
         if (shootingTarget == null) {
             bot.setFire(0);
@@ -41,7 +46,11 @@ public class Gunner {
             shootingTargets.put(bot.getTurnNumber(), shootingTarget);
         }
         shootingTargets.remove(bot.getTurnNumber() - 2);
-        action = nextAction;
+        this.action = nextAction;
+    }
+
+    public void setTrigger(GunTrigger trigger) {
+        this.trigger = trigger;
     }
 
     public void setAction(GunAction action) {

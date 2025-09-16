@@ -8,8 +8,8 @@ import okurun.predictor.Predictor;
 import okurun.radaroperator.EnemyState;
 
 public class QuickTrigger extends AbstractTrigger {
-    public QuickTrigger(Commander commander, EnemyState targetEnemy) {
-        super(commander, targetEnemy);
+    public QuickTrigger(Commander commander) {
+        super(commander);
     }
 
     @Override
@@ -23,6 +23,7 @@ public class QuickTrigger extends AbstractTrigger {
     }
 
     private double calcFirePowoer() {
+        final EnemyState targetEnemy = getTargetEnemy();
         if (targetEnemy.energy <= 0) {
             return Constants.MAX_FIREPOWER;
         }

@@ -5,7 +5,7 @@ import okurun.Commander;
 import okurun.driver.action.*;
 import okurun.gunner.action.*;
 import okurun.gunner.trigger.QuickTrigger;
-import okurun.gunner.trigger.Trigger;
+import okurun.gunner.trigger.GunTrigger;
 import okurun.radaroperator.EnemyState;
 import okurun.radaroperator.RadarOperator;
 import okurun.radaroperator.action.*;
@@ -53,9 +53,12 @@ public abstract class AbstractTactic implements TacticStrategy {
 
     @Override
     public GunAction getNextGunAction() {
-        final EnemyState enemy = commander.getTargetEnemy();
-        final Trigger trigger = new QuickTrigger(commander, enemy);
-        return new NormalGunAction(commander, trigger);
+        return new NormalGunAction(commander);
+    }
+
+    @Override
+    public GunTrigger getNextGunTrigger() {
+        return new QuickTrigger(commander);
     }
 
     @Override

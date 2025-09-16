@@ -2,7 +2,7 @@ package okurun.gunner.trigger;
 
 import okurun.radaroperator.EnemyState;
 
-public interface Trigger {
+public interface GunTrigger {
     double getFirePower();
     int getNextFireTurnNum();
     EnemyState getTargetEnemy();

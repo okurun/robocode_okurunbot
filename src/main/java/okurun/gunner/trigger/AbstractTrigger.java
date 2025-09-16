@@ -3,17 +3,15 @@ package okurun.gunner.trigger;
 import okurun.Commander;
 import okurun.radaroperator.EnemyState;
 
-public abstract class AbstractTrigger implements Trigger {
+public abstract class AbstractTrigger implements GunTrigger {
     protected final Commander commander;
-    protected final EnemyState targetEnemy;
 
-    protected AbstractTrigger(Commander commander, EnemyState targetEnemy) {
+    protected AbstractTrigger(Commander commander) {
         this.commander = commander;
-        this.targetEnemy = targetEnemy;
     }
 
     @Override
     public EnemyState getTargetEnemy() {
-        return this.targetEnemy;
+        return commander.getTargetEnemy();
     }
 }

@@ -13,6 +13,7 @@ import okurun.driver.Driver;
 import okurun.driver.action.DriveAction;
 import okurun.gunner.Gunner;
 import okurun.gunner.action.GunAction;
+import okurun.gunner.trigger.GunTrigger;
 import okurun.predictor.Predictor;
 import okurun.radaroperator.EnemyState;
 import okurun.radaroperator.RadarOperator;
@@ -89,6 +90,14 @@ public class TankCommander implements Commander {
     public GunAction getNextGunAction() {
         if (tactic != null) {
             return tactic.getNextGunAction();
+        }
+        return null;
+    }
+
+    @Override
+    public GunTrigger getNextGunTrigger() {
+        if (tactic != null) {
+            return tactic.getNextGunTrigger();
         }
         return null;
     }

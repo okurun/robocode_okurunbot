@@ -3,18 +3,18 @@ package okurun.gunner.action;
 import dev.robocode.tankroyale.botapi.IBot;
 import okurun.Commander;
 import okurun.gunner.ShootingTarget;
-import okurun.gunner.trigger.Trigger;
+import okurun.gunner.trigger.GunTrigger;
 import okurun.predictor.PredictData;
 import okurun.predictor.Predictor;
 import okurun.radaroperator.EnemyState;
 
 public class NormalGunAction extends AbstractGunAction {
-    public NormalGunAction(Commander commander, Trigger trigger) {
-        super(commander, trigger);
+    public NormalGunAction(Commander commander) {
+        super(commander);
     }
 
     @Override
-    public GunAction action() {
+    public GunAction action(GunTrigger trigger) {
         final EnemyState targetEnemy = trigger.getTargetEnemy();
         if (targetEnemy == null) {
             shootingTarget = null;
@@ -35,11 +35,11 @@ public class NormalGunAction extends AbstractGunAction {
             );
             return null;
         }
-        shootingTarget = createShootingTarget();
+        shootingTarget = createShootingTarget(trigger);
         return null;
     }
 
-    private ShootingTarget createShootingTarget() {
+    private ShootingTarget createShootingTarget(GunTrigger trigger) {
         final IBot bot = commander.getBot();
         final EnemyState targetEnemy = trigger.getTargetEnemy();
         final int nextFireTurnNum = trigger.getNextFireTurnNum();

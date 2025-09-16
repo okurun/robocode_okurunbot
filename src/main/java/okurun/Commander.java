@@ -6,6 +6,7 @@ import okurun.driver.Driver;
 import okurun.driver.action.DriveAction;
 import okurun.gunner.Gunner;
 import okurun.gunner.action.GunAction;
+import okurun.gunner.trigger.GunTrigger;
 import okurun.radaroperator.EnemyState;
 import okurun.radaroperator.RadarOperator;
 import okurun.radaroperator.action.RadarAction;
@@ -102,4 +103,6 @@ public interface Commander {
 
     default void onTeamMessage(TeamMessageEvent teamMessageEvent) {
     }
+
+    GunTrigger getNextGunTrigger();
 }

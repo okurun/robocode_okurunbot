@@ -36,6 +36,5 @@ public class SurvivalTactic extends AbstractTactic {
     @Override
     protected DriveAction getEmergencyDriveAction() {
         return null;
-    }
-    
+    }    
 }
