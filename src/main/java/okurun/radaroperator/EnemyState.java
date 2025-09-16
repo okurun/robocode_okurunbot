@@ -8,7 +8,7 @@ public class EnemyState {
     public final double velocity;
     public final double energy;
     public final int scandTurnNum;
-    public final EnemyState previousState;
+    public EnemyState previousState;
 
     public EnemyState(int enemyId) {
         this.enemyId = enemyId;
@@ -44,6 +44,9 @@ public class EnemyState {
         return new double[]{x, y};
     }
 
+    public void deletePreviousState() {
+        this.previousState = null;
+    }
     @Override
     public String toString() {
         return "EnemyState{" +

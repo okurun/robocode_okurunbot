@@ -123,7 +123,7 @@ public class RadarOperator {
     }
 
     public void onScannedBot(ScannedBotEvent scannedBotEvent) {
-        int enemyId = scannedBotEvent.getScannedBotId();
+        final int enemyId = scannedBotEvent.getScannedBotId();
         EnemyState previousState = enemyStates.get(enemyId);
         enemyStates.put(enemyId, new EnemyState(
                 enemyId,
@@ -135,6 +135,13 @@ public class RadarOperator {
                 scannedBotEvent.getTurnNumber(),
                 previousState
         ));
+        int i = 0;
+        while ((previousState = previousState.previousState) != null) {
+            if (++i >= 10) {
+                previousState.deletePreviousState();
+                break;
+            }
+        }
     }
 
     public void onSkippedTurn(SkippedTurnEvent skippedTurnEvent) {
