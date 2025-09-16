@@ -2,9 +2,13 @@ package okurun.tactic;
 
 import dev.robocode.tankroyale.botapi.IBot;
 import okurun.Commander;
+import okurun.battlemanager.BattleManager;
+import okurun.battlemanager.EnemyBattleData;
 import okurun.driver.action.*;
 import okurun.gunner.action.*;
-import okurun.gunner.trigger.QuickTrigger;
+import okurun.gunner.trigger.*;
+import okurun.predictor.PredictData;
+import okurun.predictor.Predictor;
 import okurun.gunner.trigger.GunTrigger;
 import okurun.radaroperator.EnemyState;
 import okurun.radaroperator.RadarOperator;
@@ -58,7 +62,63 @@ public abstract class AbstractTactic implements TacticStrategy {
 
     @Override
     public GunTrigger getNextGunTrigger() {
-        return new QuickTrigger(commander);
+        final EnemyState targetEnemy = commander.getTargetEnemy();
+        if (targetEnemy == null) {
+            return new QuickGunTrigger(commander);
+        }
+        final IBot bot = commander.getBot();
+        final Predictor predictor = Predictor.getInstance();
+        final PredictData pos = predictor.predict(targetEnemy, bot.getTurnNumber());
+        final double distance;
+        if (pos == null) {
+            distance = bot.distanceTo(targetEnemy.x, targetEnemy.y);
+        } else {
+            distance = bot.distanceTo(pos.x, pos.y);
+        }
+        if (distance < 200) {
+            return new QuickGunTrigger(commander);
+        }
+        int intervalTurnNum = 10;
+        if (distance < 300) {
+            intervalTurnNum += 10;
+        }
+        if (distance < 400) {
+            intervalTurnNum += 10;
+        }
+        if (distance < 500) {
+            intervalTurnNum += 10;
+        }
+        final BattleManager battleManager = BattleManager.getInstance();
+        final EnemyBattleData enemyBattleData = battleManager.getEnemyBattleData(targetEnemy.enemyId);
+        if (enemyBattleData != null) {
+            final double hitRate = enemyBattleData.getHitRate();
+            if (hitRate < 0.4) {
+                intervalTurnNum += 5;
+            }
+            if (hitRate < 0.3) {
+                intervalTurnNum += 5;
+            }
+            if (hitRate < 0.2) {
+                intervalTurnNum += 5;
+            }
+            if (hitRate < 0.1) {
+                intervalTurnNum += 5;
+            }
+        }
+        final double energy = bot.getEnergy();
+        if (energy < 40) {
+            intervalTurnNum += 5;
+        }
+        if (energy < 30) {
+            intervalTurnNum += 5;
+        }
+        if (energy < 20) {
+            intervalTurnNum += 5;
+        }
+        if (energy < 10) {
+            intervalTurnNum += 5;
+        }
+        return new PeriodicGunTrigger(commander, intervalTurnNum);
     }
 
     @Override

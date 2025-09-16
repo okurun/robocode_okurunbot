@@ -7,9 +7,16 @@ import okurun.predictor.PredictData;
 import okurun.predictor.Predictor;
 import okurun.radaroperator.EnemyState;
 
-public class QuickTrigger extends AbstractTrigger {
-    public QuickTrigger(Commander commander) {
-        super(commander);
+public abstract class AbstractGunTrigger implements GunTrigger {
+    protected final Commander commander;
+
+    protected AbstractGunTrigger(Commander commander) {
+        this.commander = commander;
+    }
+
+    @Override
+    public EnemyState getTargetEnemy() {
+        return commander.getTargetEnemy();
     }
 
     @Override
@@ -63,18 +70,5 @@ public class QuickTrigger extends AbstractTrigger {
             firePower -= 1;
         }
         return Math.max(firePower, 1);
-    }
-
-    @Override
-    public int getNextFireTurnNum() {
-        final IBot bot = commander.getBot();
-        return calcNextFireTurnNum(bot.getGunHeat(), bot.getGunCoolingRate()) + bot.getTurnNumber();
-    }
-
-    private static int calcNextFireTurnNum(double gunHeat, double coolingRate) {
-        if (gunHeat <= 0) {
-            return 0;
-        }
-        return (int) Math.ceil(gunHeat / coolingRate);
     }
 }

@@ -67,6 +67,6 @@ public class MovePatternPredictModel extends PredictModel {
 
     @Override
     public Color getBulletColor() {
-        return Util.GREEN_COLOR;
+        return Util.YELLOW_COLOR;
     }
 }

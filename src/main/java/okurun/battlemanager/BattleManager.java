@@ -1,5 +1,6 @@
 package okurun.battlemanager;
 
+import java.util.Comparator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -44,6 +45,12 @@ public class BattleManager {
 
     public BulletData getBulletData(int bulletId) {
         return bulletDataMap.get(bulletId);
+    }
+
+    public BulletData getLastBulletData() {
+        return bulletDataMap.values().stream()
+            .max(Comparator.comparingInt(b -> b.firedTurnNum))
+            .orElse(null);
     }
 
     public void onConnected(ConnectedEvent connectedEvent) {

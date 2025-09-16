@@ -34,7 +34,6 @@ public class Gunner {
         final IBot bot = commander.getBot();
         if (shootingTarget == null) {
             bot.setFire(0);
-            bot.setBulletColor(Util.WHITE_COLOR);
         } else {
             bot.setTurnGunLeft(bot.gunBearingTo(shootingTarget.x, shootingTarget.y));
             bot.setFire(shootingTarget.firePower);
