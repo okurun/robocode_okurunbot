@@ -10,7 +10,7 @@ public class QuickGunTrigger extends AbstractGunTrigger {
     }
 
     @Override
-    public int getNextFireTurnNum() {
+    protected int calcNextFireTurnNum() {
         final IBot bot = commander.getBot();
         return Util.calcNextFireTurnNum(bot.getGunHeat(), bot.getGunCoolingRate()) + bot.getTurnNumber();
     }

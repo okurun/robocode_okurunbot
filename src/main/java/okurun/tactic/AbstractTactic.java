@@ -75,49 +75,59 @@ public abstract class AbstractTactic implements TacticStrategy {
         } else {
             distance = bot.distanceTo(pos.x, pos.y);
         }
-        if (distance < 200) {
+        if (distance < 250) {
             return new QuickGunTrigger(commander);
         }
-        int intervalTurnNum = 10;
-        if (distance < 300) {
-            intervalTurnNum += 10;
+
+        int intervalTurnNum = 15;
+        final int a = 3;
+        if (distance < 350) {
+            intervalTurnNum += a;
         }
-        if (distance < 400) {
-            intervalTurnNum += 10;
+        if (distance < 450) {
+            intervalTurnNum += a;
         }
-        if (distance < 500) {
-            intervalTurnNum += 10;
+        if (distance < 550) {
+            intervalTurnNum += a;
         }
+        if (distance < 650) {
+            intervalTurnNum += a;
+        }
+
         final BattleManager battleManager = BattleManager.getInstance();
         final EnemyBattleData enemyBattleData = battleManager.getEnemyBattleData(targetEnemy.enemyId);
         if (enemyBattleData != null) {
-            final double hitRate = enemyBattleData.getHitRate();
-            if (hitRate < 0.4) {
-                intervalTurnNum += 5;
-            }
-            if (hitRate < 0.3) {
-                intervalTurnNum += 5;
-            }
-            if (hitRate < 0.2) {
-                intervalTurnNum += 5;
-            }
-            if (hitRate < 0.1) {
-                intervalTurnNum += 5;
+            if (enemyBattleData.getTargetedCount() >= 10) {
+                final double hitRate = enemyBattleData.getHitRate();
+                if (hitRate < 0.4) {
+                    intervalTurnNum += a;
+                }
+                if (hitRate < 0.3) {
+                    intervalTurnNum += a;
+                }
+                if (hitRate < 0.2) {
+                    intervalTurnNum += a;
+                }
+                if (hitRate < 0.1) {
+                    intervalTurnNum += a;
+                }
             }
         }
+
         final double energy = bot.getEnergy();
         if (energy < 40) {
-            intervalTurnNum += 5;
+            intervalTurnNum += a;
         }
         if (energy < 30) {
-            intervalTurnNum += 5;
+            intervalTurnNum += a;
         }
         if (energy < 20) {
-            intervalTurnNum += 5;
+            intervalTurnNum += a;
         }
         if (energy < 10) {
-            intervalTurnNum += 5;
+            intervalTurnNum += a;
         }
+
         return new PeriodicGunTrigger(commander, intervalTurnNum);
     }
 

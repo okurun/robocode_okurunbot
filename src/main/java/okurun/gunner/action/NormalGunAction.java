@@ -48,7 +48,7 @@ public class NormalGunAction extends AbstractGunAction {
         final double bulletSpeed = bot.calcBulletSpeed(Math.max(firePower, 1));
         double distance = 0;
         PredictData predictData = null;
-        for (int i = 1; i < 50; i++) {
+        for (int i = 1; i < 70; i++) {
             predictData = predictor.predict(targetEnemy, nextFireTurnNum + i);
             if (predictData == null) {
                 return null;

@@ -29,7 +29,7 @@ public class ApproachEnemyDriveAction extends AbstractDriveAction {
         }
 
         this.turnDegree = calcTurnDegree();
-        this.forwardDistance = 0;
+        this.forwardDistance = 30;
         this.maxSpeed = Constants.MAX_SPEED;
 
         return null;

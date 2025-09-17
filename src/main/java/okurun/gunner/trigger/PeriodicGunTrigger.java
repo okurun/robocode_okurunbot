@@ -15,7 +15,7 @@ public class PeriodicGunTrigger extends AbstractGunTrigger {
     }
 
     @Override
-    public int getNextFireTurnNum() {
+    protected int calcNextFireTurnNum() {
         final IBot bot = commander.getBot();
         final int turnNum = bot.getTurnNumber();
         final BattleManager battleManager = BattleManager.getInstance();

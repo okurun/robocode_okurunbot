@@ -35,7 +35,6 @@ public class Gunner {
         } else {
             bot.setTurnGunLeft(bot.gunBearingTo(shootingTarget.x, shootingTarget.y));
             bot.setFire(shootingTarget.firePower);
-            System.out.println("Turn#" + bot.getTurnNumber() + " Fire:" + shootingTarget.firePower + ", gunHeat:" + bot.getGunHeat());
             if (shootingTarget.predictModel == null) {
                 bot.setBulletColor(Util.WHITE_COLOR);
             } else {

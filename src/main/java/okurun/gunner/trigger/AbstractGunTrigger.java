@@ -9,6 +9,7 @@ import okurun.radaroperator.EnemyState;
 
 public abstract class AbstractGunTrigger implements GunTrigger {
     protected final Commander commander;
+    private int nextFireTurnNum = 0;
 
     protected AbstractGunTrigger(Commander commander) {
         this.commander = commander;
@@ -44,11 +45,8 @@ public abstract class AbstractGunTrigger implements GunTrigger {
         if (distance < 90) {
             return Constants.MAX_FIREPOWER;
         }
-        if (distance > 550) {
+        if (distance > 750) {
             return 0;
-        }
-        if (distance > 400) {
-            return 1;
         }
 
         double firePower = 2;
@@ -71,4 +69,14 @@ public abstract class AbstractGunTrigger implements GunTrigger {
         }
         return Math.max(firePower, Constants.MIN_FIREPOWER);
     }
+
+    @Override
+    public int getNextFireTurnNum() {
+        if (nextFireTurnNum == 0) {
+            nextFireTurnNum = calcNextFireTurnNum();
+        }
+        return nextFireTurnNum;
+    }
+
+    protected abstract int calcNextFireTurnNum();
 }
