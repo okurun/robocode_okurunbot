@@ -26,9 +26,7 @@ public class Gunner {
         if (this.action == null) {
             this.action = commander.getNextGunAction();
         }
-        if (this.trigger == null) {
-            this.trigger = commander.getNextGunTrigger();
-        }
+        this.trigger = commander.getNextGunTrigger();
         final GunAction nextAction = this.action.action(this.trigger);
         final ShootingTarget shootingTarget = this.action.getShootingTarget();
         final IBot bot = commander.getBot();
@@ -37,6 +35,7 @@ public class Gunner {
         } else {
             bot.setTurnGunLeft(bot.gunBearingTo(shootingTarget.x, shootingTarget.y));
             bot.setFire(shootingTarget.firePower);
+            System.out.println("Turn#" + bot.getTurnNumber() + " Fire:" + shootingTarget.firePower + ", gunHeat:" + bot.getGunHeat());
             if (shootingTarget.predictModel == null) {
                 bot.setBulletColor(Util.WHITE_COLOR);
             } else {

@@ -45,7 +45,7 @@ public class NormalGunAction extends AbstractGunAction {
         final int nextFireTurnNum = trigger.getNextFireTurnNum();
         final double firePower = trigger.getFirePower();
         final Predictor predictor = Predictor.getInstance();
-        final double bulletSpeed = bot.calcBulletSpeed(firePower);
+        final double bulletSpeed = bot.calcBulletSpeed(Math.max(firePower, 1));
         double distance = 0;
         PredictData predictData = null;
         for (int i = 1; i < 50; i++) {

@@ -23,7 +23,7 @@ public abstract class AbstractGunTrigger implements GunTrigger {
     public double getFirePower() {
         final IBot bot = commander.getBot();
         final int nextFireTurnNum = getNextFireTurnNum();
-        if (bot.getTurnNumber() <= nextFireTurnNum) {
+        if (bot.getTurnNumber() >= nextFireTurnNum) {
             return calcFirePowoer();
         }
         return 0;
@@ -44,11 +44,11 @@ public abstract class AbstractGunTrigger implements GunTrigger {
         if (distance < 90) {
             return Constants.MAX_FIREPOWER;
         }
-        if (distance > 400) {
-            return 1;
-        }
         if (distance > 550) {
             return 0;
+        }
+        if (distance > 400) {
+            return 1;
         }
 
         double firePower = 2;
@@ -69,6 +69,6 @@ public abstract class AbstractGunTrigger implements GunTrigger {
         } else if (diffDistancePerTurn > Constants.MAX_SPEED / 2) {
             firePower -= 1;
         }
-        return Math.max(firePower, 1);
+        return Math.max(firePower, Constants.MIN_FIREPOWER);
     }
 }
