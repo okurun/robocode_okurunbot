@@ -1,6 +1,5 @@
 package okurun.tactic;
 
-import dev.robocode.tankroyale.botapi.Constants;
 import dev.robocode.tankroyale.botapi.IBot;
 import okurun.Commander;
 import okurun.arenamap.ArenaMap;
@@ -143,7 +142,7 @@ public abstract class AbstractTactic implements TacticStrategy {
         final ArenaMap arenaMap = ArenaMap.getInstance();
         final Wall nearestWall = arenaMap.getNearestWall(bot);
         final double distanceToWall = nearestWall.distanceTo(bot);
-        if (distanceToWall < (Commander.BODY_SIZE / 2) + (Constants.MAX_SPEED * 4) + 5) {
+        if (distanceToWall < 45) {
             return new AvoidWallDriveAction(commander);
         }
         return null;

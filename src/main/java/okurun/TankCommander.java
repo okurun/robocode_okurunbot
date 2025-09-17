@@ -242,6 +242,7 @@ public class TankCommander implements Commander {
         driver.onHitWall(botHitWallEvent);
         BattleManager.getInstance().onHitWall(botHitWallEvent);
         Predictor.getInstance().onHitWall(botHitWallEvent);
+        System.out.println("!!! Hit Wall !!!");
     }
 
     @Override

@@ -4,16 +4,19 @@ import dev.robocode.tankroyale.botapi.IBot;
 import dev.robocode.tankroyale.botapi.events.*;
 import okurun.Commander;
 import okurun.driver.action.DriveAction;
+import okurun.driver.brake.*;
 
 public class Driver {
     private Commander commander;
     private DriveAction action;
+    private Brake brake;
 
     public Driver() {
     }
 
     public void init(Commander commander) {
         this.commander = commander;
+        this.brake = new ConsideringWallBrake(commander);
     }
 
     public void action() {
@@ -24,13 +27,8 @@ public class Driver {
         final IBot bot = commander.getBot();
         bot.setTurnLeft(action.getTurnDegree());
         bot.setForward(action.getForwardDistance());
-        bot.setTargetSpeed(consideringWallBrake(action.getTargetSpeed()));
+        bot.setTargetSpeed(brake.brake(action.getTargetSpeed(), action.getForwardDistance()));
         action = nextAction;
-    }
-
-    private double consideringWallBrake(double targetSpeed) {
-        // TODO
-        return targetSpeed;
     }
 
     public void setAction(DriveAction action) {
