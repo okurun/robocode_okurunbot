@@ -116,6 +116,7 @@ public class TankCommander implements Commander {
         bot.setAdjustRadarForGunTurn(true);
         bot.setAdjustRadarForGunTurn(true);
 
+        Predictor.getInstance().clearCache();
         final TacticStrategy nextTactic = getNextTactic();
         if (tactic == null || tactic != nextTactic) {
             tactic = nextTactic;

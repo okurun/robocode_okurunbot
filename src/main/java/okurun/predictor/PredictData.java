@@ -11,9 +11,9 @@ public class PredictData {
     public final int predictedTurnNum;
     public final PredictModel model;
 
-    public PredictData(double x, double y, double heading, double velocity, double turnDegree, int predictedTurnNum, PredictModel model) {
-        this.x = x;
-        this.y = y;
+    public PredictData(double[] pos, double heading, double velocity, double turnDegree, int predictedTurnNum, PredictModel model) {
+        this.x = pos[0];
+        this.y = pos[1];
         this.heading = heading;
         this.velocity = velocity;
         this.turnDegree = turnDegree;

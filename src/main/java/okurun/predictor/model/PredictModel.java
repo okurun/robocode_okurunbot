@@ -75,4 +75,5 @@ public abstract class PredictModel {
 
     abstract public PredictData predict(EnemyState enemyState, int predictTurnNum);
     abstract public Color getBulletColor();
+    abstract public void clearCache();
 }

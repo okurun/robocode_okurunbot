@@ -1,7 +1,9 @@
 package okurun.predictor.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import dev.robocode.tankroyale.botapi.graphics.Color;
 import okurun.Util;
@@ -10,6 +12,8 @@ import okurun.predictor.PredictData;
 import okurun.radaroperator.EnemyState;
 
 public class MovePatternPredictModel extends PredictModel {
+    private final Map<Integer, PredictData> cache = new HashMap<>();
+
     @Override
     public PredictData predict(EnemyState enemyState, int predictTurnNum) {
         final var arenaMap = ArenaMap.getInstance();
@@ -17,27 +21,47 @@ public class MovePatternPredictModel extends PredictModel {
         if (movePatterns.size() < 10) {
             return null;
         }
-        double[] newPos = enemyState.getPosition();
-        double newHeading = enemyState.heading;
-        double[] prevPos;
+        PredictData newData = new PredictData(
+            enemyState.getPosition(),
+            enemyState.heading, enemyState.velocity, enemyState.getTurnDegree(),
+            enemyState.scandTurnNum, this
+        );
+        PredictData prevData;
         if (enemyState.previousState == null) {
-            prevPos = enemyState.getPosition();
+            prevData = newData;
         } else {
-            prevPos = enemyState.previousState.getPosition();
+            prevData = new PredictData(
+                enemyState.previousState.getPosition(),
+                enemyState.previousState.heading, enemyState.previousState.velocity, enemyState.previousState.getTurnDegree(),
+                enemyState.previousState.scandTurnNum, this
+            );
         }
         for (int i = enemyState.scandTurnNum + 1; i <= predictTurnNum; i++) {
-            final double[] tempPos = newPos;
+            if (cache.containsKey(i)) {
+                prevData = newData;
+                newData = cache.get(i);
+                continue;
+            }
+            final PredictData tempData = newData;
             final MovePattern pattern = movePatterns.get(i % movePatterns.size());
-            newPos = Util.calcPosition(newPos, newHeading, pattern.velocity, pattern.turnDegree, 1);
-            newPos = arenaMap.keepPositionInArena(newPos, prevPos);
-            newHeading += pattern.turnDegree;
-            prevPos = tempPos;
+            double[] newPos = Util.calcPosition(
+                newData.getPosition(),
+                newData.heading,
+                pattern.velocity,
+                pattern.turnDegree,
+                1
+            );
+            newPos = arenaMap.keepPositionInArena(newPos, prevData.getPosition());
+            newData = new PredictData(
+                newPos,
+                newData.heading + pattern.turnDegree,
+                newData.velocity, pattern.turnDegree,
+                i, this
+            );
+            prevData = tempData;
+            cache.put(i, newData);
         }
-        return new PredictData(
-            newPos[0], newPos[1],
-            enemyState.velocity, newHeading, 0,
-            predictTurnNum, this
-        );
+        return newData;
     }
 
     private List<MovePattern> extractMovePatterns(EnemyState enemyState) {
@@ -68,5 +92,10 @@ public class MovePatternPredictModel extends PredictModel {
     @Override
     public Color getBulletColor() {
         return Util.YELLOW_COLOR;
+    }
+
+    @Override
+    public void clearCache() {
+        cache.clear();
     }
 }

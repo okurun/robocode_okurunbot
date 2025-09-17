@@ -40,6 +40,10 @@ public class Predictor {
         }
     }
 
+    public void clearCache() {
+        predictModels.values().forEach(m -> m.values().forEach(PredictModel::clearCache));
+    }
+
     public PredictData predict(EnemyState enemyState, int predictTurnNum) {
         final PredictModel unUserbleModel = predictModels.get(enemyState.enemyId).values().stream()
             .min(Comparator.comparingInt(pm -> pm.getFiredCount()))
