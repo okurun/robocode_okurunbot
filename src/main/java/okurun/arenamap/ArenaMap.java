@@ -1,5 +1,9 @@
 package okurun.arenamap;
 
+import java.util.Comparator;
+import java.util.Map;
+
+import dev.robocode.tankroyale.botapi.IBot;
 import okurun.Commander;
 
 public class ArenaMap {
@@ -8,8 +12,56 @@ public class ArenaMap {
         return instance;
     }
 
+    public static enum WallId {
+        LEFT, TOP, RIGHT, BOTTOM
+    }
+
+    public class Wall {
+        public final WallId id;
+        public final int x, y;
+
+        Wall(WallId id, int x, int y) {
+            this.id = id;
+            this.x = x;
+            this.y = y;
+        }
+
+        public double distanceTo(double px, double py) {
+            return switch (id) {
+                case LEFT, RIGHT -> Math.abs(px - x);
+                case TOP, BOTTOM -> Math.abs(py - y);
+            };
+        }
+
+        public double degreeTo(IBot bot) {
+            return switch (id) {
+                case TOP, BOTTOM -> bot.bearingTo(bot.getX(), y);
+                case LEFT, RIGHT -> bot.bearingTo(x, bot.getY());
+            };
+        }
+
+        public Wall getOppositeWall() {
+            return walls.get(switch (id) {
+                case LEFT -> WallId.RIGHT;
+                case TOP -> WallId.BOTTOM;
+                case RIGHT -> WallId.LEFT;
+                case BOTTOM -> WallId.TOP;
+            });
+        }
+
+        public boolean isFacing(double direction) {
+            return switch (id) {
+                case TOP -> (direction > 0 && direction < 180);
+                case BOTTOM -> (direction > 180 && direction < 360);
+                case LEFT -> (direction < 270 && direction > 90);
+                case RIGHT -> (direction < 90 || direction > 270);
+            };
+        }
+    }
+
     private int width;
     private int height;
+    private Map<WallId, Wall> walls;
 
     private ArenaMap() {
     }
@@ -17,6 +69,12 @@ public class ArenaMap {
     public void init(int width, int height) {
         this.width = width;
         this.height = height;
+        this.walls = Map.of(
+            WallId.LEFT, new Wall(WallId.LEFT, 0, -1),
+            WallId.TOP, new Wall(WallId.TOP, -1, height),
+            WallId.RIGHT, new Wall(WallId.RIGHT, width, -1),
+            WallId.BOTTOM, new Wall(WallId.BOTTOM, -1, 0)
+        );
     }
 
     public int getWidth() {
@@ -25,6 +83,12 @@ public class ArenaMap {
 
     public int getHeight() {
         return height;
+    }
+
+    public Wall getNearestWall(double x, double y) {
+        return walls.values().stream()
+            .min(Comparator.comparingDouble(w -> w.distanceTo(x, y)))
+            .orElse(null);
     }
 
     public double[] keepPositionInArena(double[] pos, double[] beforePos) {
