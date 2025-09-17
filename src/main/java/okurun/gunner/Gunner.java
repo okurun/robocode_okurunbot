@@ -30,6 +30,7 @@ public class Gunner {
         final GunAction nextAction = this.action.action(this.trigger);
         final ShootingTarget shootingTarget = this.action.getShootingTarget();
         final IBot bot = commander.getBot();
+        bot.setGunColor(trigger.getGunColor());
         if (shootingTarget == null) {
             bot.setFire(0);
         } else {

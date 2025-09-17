@@ -1,6 +1,7 @@
 package okurun.gunner.trigger;
 
 import dev.robocode.tankroyale.botapi.IBot;
+import dev.robocode.tankroyale.botapi.graphics.Color;
 import okurun.Commander;
 import okurun.Util;
 import okurun.battlemanager.BattleManager;
@@ -27,5 +28,10 @@ public class PeriodicGunTrigger extends AbstractGunTrigger {
             lastBulletData.firedTurnNum + this.intervalTurnNum,
             Util.calcNextFireTurnNum(bot.getGunHeat(), bot.getGunCoolingRate()) + turnNum
         );
-    }    
+    }
+
+    @Override
+    public Color getGunColor() {
+        return Util.BLUE_COLOR;
+    }
 }
