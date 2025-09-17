@@ -7,7 +7,7 @@ public abstract class AbstractDriveAction implements DriveAction {
 
     protected double turnDegree;
     protected double forwardDistance;
-    protected double maxSpeed;
+    protected double targetSpeed;
 
     protected AbstractDriveAction(Commander commander) {
         this.commander = commander;
@@ -24,7 +24,7 @@ public abstract class AbstractDriveAction implements DriveAction {
     }
 
     @Override
-    public double getMaxSpeed() {
-        return maxSpeed;
+    public double getTargetSpeed() {
+        return targetSpeed;
     }
 }

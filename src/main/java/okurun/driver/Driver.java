@@ -24,13 +24,13 @@ public class Driver {
         final IBot bot = commander.getBot();
         bot.setTurnLeft(action.getTurnDegree());
         bot.setForward(action.getForwardDistance());
-        bot.setMaxSpeed(consideringWallBrake(action.getMaxSpeed()));
+        bot.setTargetSpeed(consideringWallBrake(action.getTargetSpeed()));
         action = nextAction;
     }
 
-    private double consideringWallBrake(double maxSpeed) {
+    private double consideringWallBrake(double targetSpeed) {
         // TODO
-        return maxSpeed;
+        return targetSpeed;
     }
 
     public void setAction(DriveAction action) {

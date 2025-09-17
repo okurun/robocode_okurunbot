@@ -8,5 +8,5 @@ public interface DriveAction {
 
     double getForwardDistance();
 
-    double getMaxSpeed();
+    double getTargetSpeed();
 }

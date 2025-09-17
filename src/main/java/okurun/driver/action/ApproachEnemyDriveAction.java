@@ -24,13 +24,13 @@ public class ApproachEnemyDriveAction extends AbstractDriveAction {
         if (enemy == null) {
             this.turnDegree = 0;
             this.forwardDistance = 0;
-            this.maxSpeed = 0;
+            this.targetSpeed = 0;
             return null;
         }
 
         this.turnDegree = calcTurnDegree();
         this.forwardDistance = 30;
-        this.maxSpeed = Constants.MAX_SPEED;
+        this.targetSpeed = Constants.MAX_SPEED;
 
         return null;
     }
@@ -45,11 +45,12 @@ public class ApproachEnemyDriveAction extends AbstractDriveAction {
         } else {
             pos = predictData.getPosition();
         }
-        final double angleToEnemy = bot.bearingTo(pos[0], pos[1]);
-        final Direction direction = (angleToEnemy < 0) ? Direction.LEFT : Direction.RIGHT;
+        final double directionToEnemy = bot.directionTo(pos[0], pos[1]);
+        final double degreeToEnemy = bot.bearingTo(pos[0], pos[1]);
+        final Direction direction = (degreeToEnemy < 0) ? Direction.LEFT : Direction.RIGHT;
         final double[] targetPos = Util.calcPosition(
             pos,
-            bot.normalizeRelativeAngle(angleToEnemy + (90 * direction.value)),
+            bot.normalizeAbsoluteAngle(directionToEnemy + (90 * direction.value)),
             this.distance,
             1
         );

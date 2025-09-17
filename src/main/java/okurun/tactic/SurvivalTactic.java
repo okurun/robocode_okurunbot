@@ -2,7 +2,6 @@ package okurun.tactic;
 
 import dev.robocode.tankroyale.botapi.IBot;
 import okurun.Commander;
-import okurun.driver.action.DriveAction;
 import okurun.gunner.Gunner;
 import okurun.gunner.ShootingTarget;
 import okurun.radaroperator.EnemyState;
@@ -32,9 +31,4 @@ public class SurvivalTactic extends AbstractTactic {
         }
         return new ScanTargetRadarAction(commander, enemy.enemyId);
     }
-
-    @Override
-    protected DriveAction getEmergencyDriveAction() {
-        return null;
-    }    
 }

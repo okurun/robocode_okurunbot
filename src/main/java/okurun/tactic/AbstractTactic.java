@@ -1,7 +1,10 @@
 package okurun.tactic;
 
+import dev.robocode.tankroyale.botapi.Constants;
 import dev.robocode.tankroyale.botapi.IBot;
 import okurun.Commander;
+import okurun.arenamap.ArenaMap;
+import okurun.arenamap.ArenaMap.Wall;
 import okurun.battlemanager.BattleManager;
 import okurun.battlemanager.EnemyBattleData;
 import okurun.driver.action.*;
@@ -9,7 +12,6 @@ import okurun.gunner.action.*;
 import okurun.gunner.trigger.*;
 import okurun.predictor.PredictData;
 import okurun.predictor.Predictor;
-import okurun.gunner.trigger.GunTrigger;
 import okurun.radaroperator.EnemyState;
 import okurun.radaroperator.RadarOperator;
 import okurun.radaroperator.action.*;
@@ -136,5 +138,14 @@ public abstract class AbstractTactic implements TacticStrategy {
         return new ApproachEnemyDriveAction(commander, commander.getTargetEnemy(), 300);
     }
 
-    protected abstract DriveAction getEmergencyDriveAction();
+    protected DriveAction getEmergencyDriveAction() {
+        final IBot bot = commander.getBot();
+        final ArenaMap arenaMap = ArenaMap.getInstance();
+        final Wall nearestWall = arenaMap.getNearestWall(bot);
+        final double distanceToWall = nearestWall.distanceTo(bot);
+        if (distanceToWall < (Commander.BODY_SIZE / 2) + (Constants.MAX_SPEED * 4) + 5) {
+            return new AvoidWallDriveAction(commander);
+        }
+        return null;
+    }
 }

@@ -26,6 +26,10 @@ public class ArenaMap {
             this.y = y;
         }
 
+        public double distanceTo(IBot bot) {
+            return distanceTo(bot.getX(), bot.getY());
+        }
+
         public double distanceTo(double px, double py) {
             return switch (id) {
                 case LEFT, RIGHT -> Math.abs(px - x);
@@ -83,6 +87,11 @@ public class ArenaMap {
 
     public int getHeight() {
         return height;
+    }
+
+
+    public Wall getNearestWall(IBot bot) {
+        return getNearestWall(bot.getX(), bot.getY());
     }
 
     public Wall getNearestWall(double x, double y) {
