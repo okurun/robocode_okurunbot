@@ -2,7 +2,9 @@ package okurun.driver.action;
 
 import dev.robocode.tankroyale.botapi.Constants;
 import dev.robocode.tankroyale.botapi.IBot;
+import dev.robocode.tankroyale.botapi.graphics.Color;
 import okurun.Commander;
+import okurun.Util;
 import okurun.predictor.PredictData;
 import okurun.predictor.Predictor;
 import okurun.radaroperator.EnemyState;
@@ -31,5 +33,9 @@ public class EscapeDriveAction extends AbstractDriveAction {
         this.targetSpeed = Constants.MAX_SPEED;
         return null;
     }
-    
+
+    @Override
+    public Color getTracksColor() {
+        return Util.BLUE_COLOR;
+    }
 }

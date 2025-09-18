@@ -2,7 +2,9 @@ package okurun.driver.action;
 
 import dev.robocode.tankroyale.botapi.Constants;
 import dev.robocode.tankroyale.botapi.IBot;
+import dev.robocode.tankroyale.botapi.graphics.Color;
 import okurun.Commander;
+import okurun.Util;
 import okurun.Util.Direction;
 import okurun.predictor.PredictData;
 import okurun.predictor.Predictor;
@@ -51,4 +53,10 @@ public class SideMoveDriveAction extends AbstractDriveAction {
         this.targetSpeed = speed;
         return null;
     }
+
+    @Override
+    public Color getTracksColor() {
+        return Util.GRAY_COLOR;
+    }
+
 }

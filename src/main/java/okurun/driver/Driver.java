@@ -25,6 +25,7 @@ public class Driver {
         }
         final DriveAction nextAction = action.action();
         final IBot bot = commander.getBot();
+        bot.setTracksColor(action.getTracksColor());
         bot.setTurnLeft(action.getTurnDegree());
         bot.setForward(action.getForwardDistance());
         bot.setTargetSpeed(brake.brake(action.getTargetSpeed(), action.getForwardDistance()));

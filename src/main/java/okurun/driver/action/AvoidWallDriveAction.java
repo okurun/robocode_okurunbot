@@ -2,7 +2,9 @@ package okurun.driver.action;
 
 import dev.robocode.tankroyale.botapi.Constants;
 import dev.robocode.tankroyale.botapi.IBot;
+import dev.robocode.tankroyale.botapi.graphics.Color;
 import okurun.Commander;
+import okurun.Util;
 import okurun.Util.Direction;
 import okurun.arenamap.ArenaMap;
 import okurun.arenamap.ArenaMap.Wall;
@@ -67,5 +69,9 @@ public class AvoidWallDriveAction extends AbstractDriveAction {
         }
         return null;
     }
-    
+
+    @Override
+    public Color getTracksColor() {
+        return Util.YELLOW_COLOR;
+    }
 }

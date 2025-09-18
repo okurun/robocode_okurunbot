@@ -2,6 +2,7 @@ package okurun.driver.action;
 
 import dev.robocode.tankroyale.botapi.Constants;
 import dev.robocode.tankroyale.botapi.IBot;
+import dev.robocode.tankroyale.botapi.graphics.Color;
 import okurun.Commander;
 import okurun.Util;
 import okurun.Util.Direction;
@@ -55,5 +56,10 @@ public class ApproachDriveAction extends AbstractDriveAction {
             1
         );
         return bot.bearingTo(targetPos[0], targetPos[1]);
+    }
+
+    @Override
+    public Color getTracksColor() {
+        return Util.BASE_COLOR;
     }
 }

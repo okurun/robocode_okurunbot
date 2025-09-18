@@ -1,5 +1,7 @@
 package okurun.driver.action;
 
+import dev.robocode.tankroyale.botapi.graphics.Color;
+
 public interface DriveAction {
 
     DriveAction action();
@@ -9,4 +11,6 @@ public interface DriveAction {
     double getForwardDistance();
 
     double getTargetSpeed();
+
+    Color getTracksColor();
 }

@@ -6,6 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import dev.robocode.tankroyale.botapi.IBot;
 import dev.robocode.tankroyale.botapi.events.*;
+import dev.robocode.tankroyale.botapi.graphics.Color;
 import okurun.Util.ToggleColor;
 import okurun.arenamap.ArenaMap;
 import okurun.battlemanager.BattleManager;
@@ -115,6 +116,7 @@ public class TankCommander implements Commander {
         bot.setAdjustGunForBodyTurn(true);
         bot.setAdjustRadarForGunTurn(true);
         bot.setAdjustRadarForGunTurn(true);
+        bot.setBodyColor(getBodyColor());
 
         Predictor.getInstance().clearCache();
         final TacticStrategy nextTactic = getNextTactic();
@@ -127,6 +129,30 @@ public class TankCommander implements Commander {
         tactic.action();
         ToggleColor.toggle();
         bot.go();
+    }
+
+    private Color getBodyColor() {
+        if (bot.getEnergy() < 10) {
+            final ToggleColor toggleColor = new ToggleColor(Util.BASE_COLOR, Util.RED_COLOR);
+            return toggleColor.get();
+        }
+        if (bot.getEnergy() < 20) {
+            final ToggleColor toggleColor = new ToggleColor(Util.BASE_COLOR, Util.ORANGE_COLOR);
+            return toggleColor.get();
+        }
+        if (bot.getEnergy() < 30) {
+            final ToggleColor toggleColor = new ToggleColor(Util.BASE_COLOR, Util.YELLOW_COLOR);
+            return toggleColor.get();
+        }
+        if (bot.getEnergy() < 40) {
+            final ToggleColor toggleColor = new ToggleColor(Util.BASE_COLOR, Util.WHITE_COLOR);
+            return toggleColor.get();
+        }
+        if (bot.getEnergy() < 50) {
+            final ToggleColor toggleColor = new ToggleColor(Util.BASE_COLOR, Util.BLUE_COLOR);
+            return toggleColor.get();
+        }
+        return Util.BASE_COLOR;
     }
 
     private TacticStrategy getNextTactic() {
