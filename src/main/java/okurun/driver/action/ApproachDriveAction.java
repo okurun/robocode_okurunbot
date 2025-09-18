@@ -9,11 +9,11 @@ import okurun.predictor.PredictData;
 import okurun.predictor.Predictor;
 import okurun.radaroperator.EnemyState;
 
-public class ApproachEnemyDriveAction extends AbstractDriveAction {
+public class ApproachDriveAction extends AbstractDriveAction {
     private final EnemyState enemy;
     private final double distance;
 
-    public ApproachEnemyDriveAction(Commander commander, EnemyState enemy, double distance) {
+    public ApproachDriveAction(Commander commander, EnemyState enemy, double distance) {
         super(commander);
         this.enemy = enemy;
         this.distance = distance;

@@ -11,7 +11,7 @@ import okurun.arenamap.ArenaMap;
 import okurun.predictor.PredictData;
 import okurun.radaroperator.EnemyState;
 
-public class MovePatternPredictModel extends PredictModel {
+public class MoveHistoryPredictModel extends PredictModel {
     private final Map<Integer, PredictData> cache = new HashMap<>();
 
     @Override

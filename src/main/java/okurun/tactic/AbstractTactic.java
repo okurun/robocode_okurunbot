@@ -140,8 +140,28 @@ public abstract class AbstractTactic implements TacticStrategy {
             if (bot.getEnergy() - targetEnemy.energy > 20) {
                 return new ChargeDriveAction(commander, targetEnemy);
             }
+
+            final Predictor predictor = Predictor.getInstance();
+            final PredictData predictData = predictor.predict(targetEnemy, bot.getTurnNumber());
+            final double distanceToEnemy;
+            if (predictData != null) {
+                distanceToEnemy = bot.distanceTo(predictData.x, predictData.y);
+            } else {
+                distanceToEnemy = bot.distanceTo(targetEnemy.x, targetEnemy.y);
+            }
+            if (bot.getEnergy() - targetEnemy.energy < -20) {
+                if (distanceToEnemy < 200) {
+                    return new EscapeDriveAction(commander, targetEnemy);
+                }
+                if (distanceToEnemy > 400) {
+                    return new SideMoveDriveAction(commander, targetEnemy, 400);
+                }
+            }
+            if (bot.getEnergy() - targetEnemy.energy < 0) {
+                return new SideMoveDriveAction(commander, targetEnemy, 300);
+            }
         }
-        return new ApproachEnemyDriveAction(commander, targetEnemy, 300);
+        return new ApproachDriveAction(commander, targetEnemy, 300);
     }
 
     protected DriveAction getEmergencyDriveAction() {

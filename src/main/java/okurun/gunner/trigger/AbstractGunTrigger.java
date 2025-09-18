@@ -42,7 +42,7 @@ public abstract class AbstractGunTrigger implements GunTrigger {
             return 0;
         }
         final double distance = bot.distanceTo(currentPos.x, currentPos.y);
-        if (distance < 90) {
+        if (distance < 50) {
             return Constants.MAX_FIREPOWER;
         }
         if (distance > 750) {
@@ -57,7 +57,7 @@ public abstract class AbstractGunTrigger implements GunTrigger {
         final double diffDistance = distance - prevDistance;
         final int diffTurnNum = bot.getTurnNumber() - targetEnemy.scandTurnNum;
         final double diffDistancePerTurn;
-        if (Math.abs(diffDistance) > 1) {
+        if (Math.abs(diffDistance) > 0) {
             diffDistancePerTurn = diffDistance / diffTurnNum;
         } else {
             diffDistancePerTurn = 0;

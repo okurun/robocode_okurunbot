@@ -35,7 +35,7 @@ public class Predictor {
             if (predictModels.get(i) != null) continue;
             predictModels.put(i, Map.of(
                 SimplePredictModel.class.getSimpleName(), new SimplePredictModel(),
-                MovePatternPredictModel.class.getSimpleName(), new MovePatternPredictModel()
+                MoveHistoryPredictModel.class.getSimpleName(), new MoveHistoryPredictModel()
             ));
         }
     }
