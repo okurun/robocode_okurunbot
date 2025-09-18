@@ -134,7 +134,14 @@ public abstract class AbstractTactic implements TacticStrategy {
 
     @Override
     public DriveAction getNextDriveAction() {
-        return new ApproachEnemyDriveAction(commander, commander.getTargetEnemy(), 300);
+        final EnemyState targetEnemy = commander.getTargetEnemy();
+        if (targetEnemy != null) {
+            final IBot bot = commander.getBot();
+            if (bot.getEnergy() - targetEnemy.energy > 20) {
+                return new ChargeDriveAction(commander, targetEnemy);
+            }
+        }
+        return new ApproachEnemyDriveAction(commander, targetEnemy, 300);
     }
 
     protected DriveAction getEmergencyDriveAction() {
@@ -144,6 +151,24 @@ public abstract class AbstractTactic implements TacticStrategy {
         final double distanceToWall = nearestWall.distanceTo(bot);
         if (distanceToWall < 45) {
             return new AvoidWallDriveAction(commander);
+        }
+
+        final RadarOperator radarOperator = commander.getRadarOperator();
+        final EnemyState nearestEnemy = radarOperator.getNearestEnemy();
+        if (nearestEnemy != null) {
+            if (bot.getEnergy() - nearestEnemy.energy < 20) {
+                final Predictor predictor = Predictor.getInstance();
+                final PredictData predictData = predictor.predict(nearestEnemy, bot.getTurnNumber());
+                final double distanceToEnemy;
+                if (predictData != null) {
+                    distanceToEnemy = bot.distanceTo(predictData.x, predictData.y);
+                } else {
+                    distanceToEnemy = bot.distanceTo(nearestEnemy.x, nearestEnemy.y);
+                }
+                if (distanceToEnemy < 80) {
+                    return new EscapeDriveAction(commander, nearestEnemy);
+                }
+            }
         }
         return null;
     }
