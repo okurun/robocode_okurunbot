@@ -1,15 +1,19 @@
 package okurun.driver;
 
+import java.util.List;
+
 import dev.robocode.tankroyale.botapi.IBot;
 import dev.robocode.tankroyale.botapi.events.*;
 import okurun.Commander;
 import okurun.driver.action.DriveAction;
 import okurun.driver.brake.*;
+import okurun.driver.handle.Handle;
 
 public class Driver {
     private Commander commander;
     private DriveAction action;
     private Brake brake;
+    private List<Handle> handles;
 
     public Driver() {
     }
@@ -20,13 +24,22 @@ public class Driver {
     }
 
     public void action() {
-        if (action == null) {
-            action = commander.getNextDriveAction();            
+        if (this.action == null) {
+            this.action = commander.getNextDriveAction();            
         }
-        final DriveAction nextAction = action.action();
+        if (this.handles == null) {
+            this.handles = commander.getHandles();
+        }
+        final DriveAction nextAction = this.action.action();
         final IBot bot = commander.getBot();
-        bot.setTracksColor(action.getTracksColor());
-        bot.setTurnLeft(action.getTurnDegree());
+        bot.setTracksColor(this.action.getTracksColor());
+        double turnDegree = this.action.getTurnDegree();
+        if (this.handles != null) {
+            for (final Handle handle : this.handles) {
+                turnDegree = handle.handle(turnDegree);
+            }
+        }
+        bot.setTurnLeft(turnDegree);
         bot.setForward(action.getForwardDistance());
         bot.setTargetSpeed(brake.brake(action.getTargetSpeed(), action.getForwardDistance()));
         action = nextAction;

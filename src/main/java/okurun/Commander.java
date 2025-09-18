@@ -1,9 +1,12 @@
 package okurun;
 
+import java.util.List;
+
 import dev.robocode.tankroyale.botapi.IBot;
 import dev.robocode.tankroyale.botapi.events.*;
 import okurun.driver.Driver;
 import okurun.driver.action.DriveAction;
+import okurun.driver.handle.Handle;
 import okurun.gunner.Gunner;
 import okurun.gunner.action.GunAction;
 import okurun.gunner.trigger.GunTrigger;
@@ -37,6 +40,10 @@ public interface Commander {
     GunAction getNextGunAction();
 
     DriveAction getNextDriveAction();
+
+    GunTrigger getNextGunTrigger();
+
+    List<Handle> getHandles();
 
     default void onConnected(ConnectedEvent connectedEvent) {
     }
@@ -103,6 +110,4 @@ public interface Commander {
 
     default void onTeamMessage(TeamMessageEvent teamMessageEvent) {
     }
-
-    GunTrigger getNextGunTrigger();
 }

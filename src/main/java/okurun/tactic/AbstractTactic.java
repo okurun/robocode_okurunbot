@@ -1,5 +1,7 @@
 package okurun.tactic;
 
+import java.util.List;
+
 import dev.robocode.tankroyale.botapi.IBot;
 import okurun.Commander;
 import okurun.arenamap.ArenaMap;
@@ -7,6 +9,7 @@ import okurun.arenamap.ArenaMap.Wall;
 import okurun.battlemanager.BattleManager;
 import okurun.battlemanager.EnemyBattleData;
 import okurun.driver.action.*;
+import okurun.driver.handle.*;
 import okurun.gunner.action.*;
 import okurun.gunner.trigger.*;
 import okurun.predictor.PredictData;
@@ -192,4 +195,13 @@ public abstract class AbstractTactic implements TacticStrategy {
         }
         return null;
     }
+
+    @Override
+    public List<Handle> getHandles() {
+        return List.of(
+            new SwervingHandle(commander, 16, 15),
+            new SwervingHandle(commander, 4, 15)
+        );
+    }
+
 }

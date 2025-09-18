@@ -1,7 +1,10 @@
 package okurun.tactic;
 
+import java.util.List;
+
 import dev.robocode.tankroyale.botapi.events.*;
 import okurun.driver.action.DriveAction;
+import okurun.driver.handle.Handle;
 import okurun.gunner.action.GunAction;
 import okurun.gunner.trigger.GunTrigger;
 import okurun.radaroperator.action.RadarAction;
@@ -18,6 +21,8 @@ public interface TacticStrategy {
     GunTrigger getNextGunTrigger();
 
     DriveAction getNextDriveAction();
+
+    List<Handle> getHandles();
 
     default void onConnected(ConnectedEvent connectedEvent) {
     }
