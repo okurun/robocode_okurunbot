@@ -15,4 +15,5 @@ dependencies {
 
 application {
     mainClass = 'okurun.OkuRunBot'
+    applicationDefaultJvmArgs = ["-Xms512m", "-Xmx1024m"]
 }

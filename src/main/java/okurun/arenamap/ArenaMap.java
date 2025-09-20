@@ -1,6 +1,7 @@
 package okurun.arenamap;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 
 import dev.robocode.tankroyale.botapi.IBot;
@@ -63,9 +64,55 @@ public class ArenaMap {
         }
     }
 
+    public static enum CornerId {
+        TOP_LEFT, TOP_RIGHT, BOTTOM_RIGHT, BOTTOM_LEFT
+    }
+
+    public class Corner {
+        public final CornerId id;
+        public final int x, y;
+
+        Corner(CornerId id, int x, int y) {
+            this.id = id;
+            this.x = x;
+            this.y = y;
+        }
+
+        public double distanceTo(IBot bot) {
+            return bot.distanceTo(this.x, this.y);
+        }
+
+        public double distanceTo(double[] pos) {
+            return distanceTo(pos[0], pos[1]);
+        }
+
+        public double distanceTo(double x, double y) {
+            return Math.hypot(x - this.x, y - this.y);
+        }
+
+        public Corner getOppositeCorner() {
+            return switch (id) {
+                case TOP_LEFT -> corners.get(CornerId.BOTTOM_RIGHT);
+                case TOP_RIGHT -> corners.get(CornerId.BOTTOM_LEFT);
+                case BOTTOM_RIGHT -> corners.get(CornerId.TOP_LEFT);
+                case BOTTOM_LEFT -> corners.get(CornerId.TOP_RIGHT);
+            };
+        }
+
+        public List<Corner> getNeighboringCornersWithSelf() {
+            return switch (id) {
+                case TOP_LEFT -> List.of(this, corners.get(CornerId.TOP_RIGHT), corners.get(CornerId.BOTTOM_LEFT));
+                case TOP_RIGHT -> List.of(this, corners.get(CornerId.TOP_LEFT), corners.get(CornerId.BOTTOM_RIGHT));
+                case BOTTOM_RIGHT -> List.of(this, corners.get(CornerId.BOTTOM_LEFT), corners.get(CornerId.TOP_RIGHT));
+                case BOTTOM_LEFT -> List.of(this, corners.get(CornerId.BOTTOM_RIGHT), corners.get(CornerId.TOP_LEFT));
+            };
+        }
+    }
+
     private int width;
     private int height;
     private Map<WallId, Wall> walls;
+    private Map<CornerId, Corner> corners;
 
     private ArenaMap() {
     }
@@ -78,6 +125,12 @@ public class ArenaMap {
             WallId.TOP, new Wall(WallId.TOP, -1, height),
             WallId.RIGHT, new Wall(WallId.RIGHT, width, -1),
             WallId.BOTTOM, new Wall(WallId.BOTTOM, -1, 0)
+        );
+        this.corners = Map.of(
+            CornerId.TOP_LEFT, new Corner(CornerId.TOP_LEFT, 0, height),
+            CornerId.TOP_RIGHT, new Corner(CornerId.TOP_RIGHT, width, height),
+            CornerId.BOTTOM_RIGHT, new Corner(CornerId.BOTTOM_RIGHT, width, 0),
+            CornerId.BOTTOM_LEFT, new Corner(CornerId.BOTTOM_LEFT, 0, 0)
         );
     }
 
@@ -97,6 +150,12 @@ public class ArenaMap {
     public Wall getNearestWall(double x, double y) {
         return walls.values().stream()
             .min(Comparator.comparingDouble(w -> w.distanceTo(x, y)))
+            .orElse(null);
+    }
+
+    public Corner getNearestCorner(IBot bot) {
+        return corners.values().stream()
+            .min(Comparator.comparingDouble(c -> c.distanceTo(bot)))
             .orElse(null);
     }
 
