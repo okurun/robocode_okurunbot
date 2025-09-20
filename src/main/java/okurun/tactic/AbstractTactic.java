@@ -8,6 +8,7 @@ import okurun.arenamap.ArenaMap;
 import okurun.arenamap.ArenaMap.Wall;
 import okurun.battlemanager.BattleManager;
 import okurun.battlemanager.EnemyBattleData;
+import okurun.driver.Driver;
 import okurun.driver.action.*;
 import okurun.driver.handle.*;
 import okurun.driver.trancemission.*;
@@ -229,6 +230,10 @@ public abstract class AbstractTactic implements TacticStrategy {
             }
         }
 
-        return new PeriodicTrancemission(commander, 9, 1);
+        final Driver driver = commander.getDriver();
+        if (driver.getAction() instanceof SideMoveDriveAction) {
+            return new PeriodicTrancemission(commander, 10, 10);
+        }
+        return new RandomTrancemission(commander, 9, 1);
     }
 }

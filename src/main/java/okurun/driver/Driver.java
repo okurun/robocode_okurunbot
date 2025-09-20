@@ -56,6 +56,10 @@ public class Driver {
         this.action = action;
     }
 
+    public DriveAction getAction() {
+        return this.action;
+    }
+ 
     public void onConnected(ConnectedEvent connectedEvent) {
     }
 
