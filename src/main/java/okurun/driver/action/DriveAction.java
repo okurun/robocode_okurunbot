@@ -8,8 +8,6 @@ public interface DriveAction {
 
     double getTurnDegree();
 
-    double getForwardDistance();
-
     double getTargetSpeed();
 
     Color getTracksColor();

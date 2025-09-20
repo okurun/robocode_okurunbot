@@ -29,7 +29,6 @@ public class ChargeDriveAction extends AbstractDriveAction {
             degreeToEnemy = bot.bearingTo(enemy.x, enemy.y);
         }
         this.turnDegree = degreeToEnemy;
-        this.forwardDistance = 30;
         this.targetSpeed = Constants.MAX_SPEED;
         return null;
     }

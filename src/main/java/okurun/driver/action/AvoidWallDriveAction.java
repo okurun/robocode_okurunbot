@@ -25,8 +25,8 @@ public class AvoidWallDriveAction extends AbstractDriveAction {
         final ArenaMap arenaMap = ArenaMap.getInstance();
         final Wall nearestWall = arenaMap.getNearestWall(bot);
         final double degreeToWall = nearestWall.degreeTo(bot);
+
         double turnDegree;
-        double forwardDistance = 30;
         double speed = Constants.MAX_SPEED;
         final double wallEscapeAngleOffset = 30;
         if (degreeToWall == 0) {
@@ -34,7 +34,7 @@ public class AvoidWallDriveAction extends AbstractDriveAction {
         } else {
             final Direction direction = (degreeToWall < 0) ? Direction.LEFT : Direction.RIGHT;
             if (bot.getSpeed() < 0) {
-                forwardDistance = -forwardDistance;
+                speed = -speed;
                 turnDegree = bot.normalizeRelativeAngle((90 + Math.abs(degreeToWall) + wallEscapeAngleOffset) * direction.value);
             } else {
                 turnDegree = bot.normalizeRelativeAngle((90 - Math.abs(degreeToWall) + wallEscapeAngleOffset) * direction.value);
@@ -50,15 +50,30 @@ public class AvoidWallDriveAction extends AbstractDriveAction {
                 final double distanceToEnemy = bot.distanceTo(predictedEnemy.x, predictedEnemy.y);
                 if (distanceToEnemy < 100) {
                     final double degreeToEnemy = bot.bearingTo(predictedEnemy.x, predictedEnemy.y);
-                    if (forwardDistance > 0 && Math.abs(degreeToEnemy) < 45) {
+                    if (speed > 0 && Math.abs(degreeToEnemy) < 45) {
                         turnDegree = bot.normalizeRelativeAngle(degreeToWall + 180);
-                    } else if (forwardDistance < 0 && Math.abs(degreeToEnemy) > 135) {
+                    } else if (speed < 0 && Math.abs(degreeToEnemy) > 135) {
                         turnDegree = degreeToWall;
                     }
                 }
             }
         }
-        this.forwardDistance = forwardDistance;
+
+        if ((speed > 0 && nearestWall.isFacing(bot.getDirection())) ||
+                (speed < 0 && nearestWall.getOppositeWall().isFacing(bot.getDirection()))) {
+            final double distanceToWall = nearestWall.distanceTo(bot) - (Commander.BODY_SIZE / 2);
+            final double flg = (speed >= 0) ? 1 : -1;
+            if (distanceToWall - 5 < (Constants.MAX_SPEED + (Constants.DECELERATION * 3))) {
+                speed = 0;
+            } else if (distanceToWall - 5 < (Constants.MAX_SPEED + (Constants.DECELERATION * 2))) {
+                speed = Math.min(Math.abs(Constants.DECELERATION), speed) * flg;
+            } else if (distanceToWall - 5 < (Constants.MAX_SPEED + Constants.DECELERATION)) {
+                speed = Math.min(Math.abs(Constants.DECELERATION * 2), speed) * flg;
+            } else if (distanceToWall - 5 < Constants.MAX_SPEED) {
+                speed = Math.min(Math.abs(Constants.DECELERATION * 3), speed) * flg;
+            }
+        }
+
         this.turnDegree = turnDegree;
         this.targetSpeed = speed;
 

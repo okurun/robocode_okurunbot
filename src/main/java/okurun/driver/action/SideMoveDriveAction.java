@@ -24,10 +24,8 @@ public class SideMoveDriveAction extends AbstractDriveAction {
     public DriveAction action() {
         final IBot bot = commander.getBot();
         double turnDegree = 0;
-        double forwardDistance = 0;
         double speed = Constants.MAX_SPEED;
         if (enemy != null) {
-            forwardDistance = 30;
             final Predictor predictor = Predictor.getInstance();
             final PredictData predictData = predictor.predict(enemy, bot.getTurnNumber());
             final double degreeToEnemy;
@@ -49,7 +47,6 @@ public class SideMoveDriveAction extends AbstractDriveAction {
             turnDegree = (baseDegree - Math.abs(degreeToEnemy)) * direction.value;
         }
         this.turnDegree = bot.normalizeRelativeAngle(turnDegree);
-        this.forwardDistance = forwardDistance;
         this.targetSpeed = speed;
         return null;
     }

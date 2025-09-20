@@ -24,13 +24,11 @@ public class ApproachDriveAction extends AbstractDriveAction {
     public DriveAction action() {
         if (enemy == null) {
             this.turnDegree = 0;
-            this.forwardDistance = 0;
             this.targetSpeed = 0;
             return null;
         }
 
         this.turnDegree = calcTurnDegree();
-        this.forwardDistance = 30;
         this.targetSpeed = Constants.MAX_SPEED;
 
         return null;

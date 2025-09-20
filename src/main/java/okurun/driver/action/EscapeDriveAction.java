@@ -29,7 +29,6 @@ public class EscapeDriveAction extends AbstractDriveAction {
             degreeToEnemy = bot.bearingTo(enemy.x, enemy.y);
         }
         this.turnDegree = bot.normalizeRelativeAngle(degreeToEnemy + 180);
-        this.forwardDistance = 30;
         this.targetSpeed = Constants.MAX_SPEED;
         return null;
     }

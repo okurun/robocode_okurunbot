@@ -14,6 +14,7 @@ import okurun.battlemanager.BattleManager;
 import okurun.driver.Driver;
 import okurun.driver.action.DriveAction;
 import okurun.driver.handle.Handle;
+import okurun.driver.trancemission.Trancemission;
 import okurun.gunner.Gunner;
 import okurun.gunner.action.GunAction;
 import okurun.gunner.trigger.GunTrigger;
@@ -168,6 +169,14 @@ public class TankCommander implements Commander {
     public List<Handle> getHandles() {
         if (tactic != null) {
             return tactic.getHandles();
+        }
+        return null;
+    }
+
+    @Override
+    public Trancemission getTrancemission() {
+        if (tactic != null) {
+            return tactic.getTrancemission();
         }
         return null;
     }

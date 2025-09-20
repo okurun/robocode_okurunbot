@@ -10,6 +10,7 @@ import okurun.battlemanager.BattleManager;
 import okurun.battlemanager.EnemyBattleData;
 import okurun.driver.action.*;
 import okurun.driver.handle.*;
+import okurun.driver.trancemission.*;
 import okurun.gunner.action.*;
 import okurun.gunner.trigger.*;
 import okurun.predictor.PredictData;
@@ -200,8 +201,34 @@ public abstract class AbstractTactic implements TacticStrategy {
     public List<Handle> getHandles() {
         return List.of(
             new SwervingHandle(commander, 16, 15),
-            new SwervingHandle(commander, 4, 15)
+            new SwervingHandle(commander, 4, 30)
         );
     }
 
+    @Override
+    public Trancemission getTrancemission() {
+        final EnemyState targetEnemy = commander.getTargetEnemy();
+        if (targetEnemy != null) {
+            final IBot bot = commander.getBot();
+            if (bot.getEnergy() - targetEnemy.energy > 20) {
+                return null;
+            }
+
+            final Predictor predictor = Predictor.getInstance();
+            final PredictData predictData = predictor.predict(targetEnemy, bot.getTurnNumber());
+            final double distanceToEnemy;
+            if (predictData != null) {
+                distanceToEnemy = bot.distanceTo(predictData.x, predictData.y);
+            } else {
+                distanceToEnemy = bot.distanceTo(targetEnemy.x, targetEnemy.y);
+            }
+            if (bot.getEnergy() - targetEnemy.energy < -20) {
+                if (distanceToEnemy < 200) {
+                    return null;
+                }
+            }
+        }
+
+        return new PeriodicTrancemission(commander, 9, 1);
+    }
 }

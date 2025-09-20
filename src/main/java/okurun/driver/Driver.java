@@ -6,13 +6,13 @@ import dev.robocode.tankroyale.botapi.IBot;
 import dev.robocode.tankroyale.botapi.events.*;
 import okurun.Commander;
 import okurun.driver.action.DriveAction;
-import okurun.driver.brake.*;
 import okurun.driver.handle.Handle;
+import okurun.driver.trancemission.Trancemission;
 
 public class Driver {
     private Commander commander;
     private DriveAction action;
-    private Brake brake;
+    private Trancemission trancemission;
     private List<Handle> handles;
 
     public Driver() {
@@ -20,7 +20,6 @@ public class Driver {
 
     public void init(Commander commander) {
         this.commander = commander;
-        this.brake = new ConsideringWallBrake(commander);
     }
 
     public void action() {
@@ -30,9 +29,13 @@ public class Driver {
         if (this.handles == null) {
             this.handles = commander.getHandles();
         }
+        if (this.trancemission == null) {
+            this.trancemission = commander.getTrancemission();
+        }
         final DriveAction nextAction = this.action.action();
         final IBot bot = commander.getBot();
         bot.setTracksColor(this.action.getTracksColor());
+
         double turnDegree = this.action.getTurnDegree();
         if (this.handles != null) {
             for (final Handle handle : this.handles) {
@@ -40,8 +43,12 @@ public class Driver {
             }
         }
         bot.setTurnLeft(turnDegree);
-        bot.setForward(action.getForwardDistance());
-        bot.setTargetSpeed(brake.brake(action.getTargetSpeed(), action.getForwardDistance()));
+
+        double speed = this.action.getTargetSpeed();
+        if (this.trancemission != null) {
+            speed = this.trancemission.changeGear(speed);
+        }
+        bot.setTargetSpeed(speed);
         action = nextAction;
     }
 

@@ -7,6 +7,7 @@ import dev.robocode.tankroyale.botapi.events.*;
 import okurun.driver.Driver;
 import okurun.driver.action.DriveAction;
 import okurun.driver.handle.Handle;
+import okurun.driver.trancemission.Trancemission;
 import okurun.gunner.Gunner;
 import okurun.gunner.action.GunAction;
 import okurun.gunner.trigger.GunTrigger;
@@ -44,6 +45,8 @@ public interface Commander {
     GunTrigger getNextGunTrigger();
 
     List<Handle> getHandles();
+
+    Trancemission getTrancemission();
 
     default void onConnected(ConnectedEvent connectedEvent) {
     }
