@@ -4,7 +4,9 @@ import java.util.Comparator;
 import java.util.List;
 
 import dev.robocode.tankroyale.botapi.IBot;
+import dev.robocode.tankroyale.botapi.graphics.Color;
 import okurun.Commander;
+import okurun.Util;
 import okurun.arenamap.ArenaMap;
 import okurun.arenamap.ArenaMap.Corner;
 import okurun.driver.action.*;
@@ -76,5 +78,10 @@ public class SurvivalTactic extends AbstractTactic {
             case BOTTOM_LEFT -> new double[] {100, 100};
         };
         return new TargetPointDriveAction(commander, targetPoint);
+    }
+
+    @Override
+    public Color getScanColor() {
+        return Util.BASE_COLOR;
     }
 }

@@ -4,13 +4,13 @@ import dev.robocode.tankroyale.botapi.graphics.Color;
 import okurun.Commander;
 import okurun.Util;
 
-public class MiddleRangeTactic extends AbstractTactic {
-    public MiddleRangeTactic(Commander commander) {
+public class LongRangeTactic extends AbstractTactic {
+    public LongRangeTactic(Commander commander) {
         super(commander);
     }
 
     @Override
     public Color getScanColor() {
-        return Util.LIGHT_YELLOW_COLOR;
+        return Util.WHITE_COLOR;
     }
 }

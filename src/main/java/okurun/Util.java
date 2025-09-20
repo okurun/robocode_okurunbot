@@ -67,6 +67,7 @@ public class Util {
     public static Color BLUE_COLOR = Color.BLUE;
     public static Color GREEN_COLOR = Color.GREEN;
     public static Color GRAY_COLOR = Color.GRAY;
+    public static Color LIGHT_YELLOW_COLOR = Color.LIGHT_YELLOW;
 
     public static double[] calcPosition(double[] pos, double heading, double velocity, int diffTurnNum) {
         return calcPosition(pos[0], pos[1], heading, velocity, diffTurnNum);

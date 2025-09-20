@@ -18,6 +18,7 @@ import okurun.driver.trancemission.Trancemission;
 import okurun.gunner.Gunner;
 import okurun.gunner.action.GunAction;
 import okurun.gunner.trigger.GunTrigger;
+import okurun.predictor.PredictData;
 import okurun.predictor.Predictor;
 import okurun.radaroperator.EnemyState;
 import okurun.radaroperator.RadarOperator;
@@ -44,7 +45,9 @@ public class TankCommander implements Commander {
         gunner.init(this);
         driver.init(this);
 
+        tactics.put(CloseRangeTactic.class.getName(), new CloseRangeTactic(this));
         tactics.put(MiddleRangeTactic.class.getName(), new MiddleRangeTactic(this));
+        tactics.put(LongRangeTactic.class.getName(), new LongRangeTactic(this));
         tactics.put(SurvivalTactic.class.getName(), new SurvivalTactic(this));}
 
     @Override
@@ -122,11 +125,14 @@ public class TankCommander implements Commander {
         bot.setBodyColor(getBodyColor());
 
         Predictor.getInstance().clearCache();
+
         final TacticStrategy nextTactic = getNextTactic();
         if (tactic == null || tactic != nextTactic) {
             tactic = nextTactic;
         }
-        if (targetEnemyId.get() == 0 || radarOperator.getEnemyState(targetEnemyId.get()) == null) {
+        bot.setScanColor(tactic.getScanColor());
+
+        if (getTargetEnemy() == null) {
             targetEnemyId.set(tactic.getTargetEnemyId());
         }
         tactic.action();
@@ -162,7 +168,21 @@ public class TankCommander implements Commander {
         if (radarOperator.getEnemyCount() > 1) {
             return tactics.get(SurvivalTactic.class.getName());
         }
-        return tactics.get(MiddleRangeTactic.class.getName());
+        final EnemyState enemy = getTargetEnemy();
+        if (enemy == null) {
+            return tactics.get(MiddleRangeTactic.class.getName());
+        }
+        final Predictor predictor = Predictor.getInstance();
+        final PredictData predictData = predictor.predict(enemy, bot.getTurnNumber());
+        final double[] enemyPos = predictData != null ? predictData.getPosition() : new double[] {enemy.x, enemy.y};
+        final double distanceToEnemy = bot.distanceTo(enemyPos[0], enemyPos[1]);
+        if (distanceToEnemy < 150) {
+            return tactics.get(CloseRangeTactic.class.getName());
+        }
+        if (distanceToEnemy < 300) {
+            return tactics.get(MiddleRangeTactic.class.getName());
+        }
+        return tactics.get(LongRangeTactic.class.getName());
     }
 
     @Override

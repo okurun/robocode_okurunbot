@@ -3,6 +3,7 @@ package okurun.tactic;
 import java.util.List;
 
 import dev.robocode.tankroyale.botapi.events.*;
+import dev.robocode.tankroyale.botapi.graphics.Color;
 import okurun.driver.action.DriveAction;
 import okurun.driver.handle.Handle;
 import okurun.driver.trancemission.Trancemission;
@@ -92,4 +93,6 @@ public interface TacticStrategy {
 
     default void onTeamMessage(TeamMessageEvent teamMessageEvent) {
     }
+
+    Color getScanColor();
 }
