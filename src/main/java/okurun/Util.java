@@ -1,5 +1,7 @@
 package okurun;
 
+import java.util.concurrent.atomic.AtomicLong;
+
 import dev.robocode.tankroyale.botapi.graphics.Color;
 
 public class Util {
@@ -26,6 +28,31 @@ public class Util {
                 return colorA;
             } else {
                 return colorB;
+            }
+        }
+    }
+
+    public static class ExponentialMovingAverage {
+        private final AtomicLong bits;
+
+        public ExponentialMovingAverage(double initialValue) {
+            bits = new AtomicLong(Double.doubleToRawLongBits(initialValue));
+        }
+
+        public double get() {
+            return Double.longBitsToDouble(bits.get());
+        }
+
+        // prop = prop*0.9 + x*0.1
+        public void update(double x) {
+            while (true) {
+                long currentBits = bits.get();
+                double currentVal = Double.longBitsToDouble(currentBits);
+                double newVal = currentVal * 0.9 + x * 0.1;
+                long newBits = Double.doubleToRawLongBits(newVal);
+                if (bits.compareAndSet(currentBits, newBits)) {
+                    return;
+                }
             }
         }
     }

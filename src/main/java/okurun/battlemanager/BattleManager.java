@@ -132,6 +132,7 @@ public class BattleManager {
         if (enemyBattleData != null) {
             if (bulletData.shootingTarget.enemyId == enemyId) {
                 enemyBattleData.incrementHitCount();
+                enemyBattleData.updateHitDistanceEma(bulletData.shootingTarget.distance);
             } else {
                 enemyBattleData.incrementNoCount();
             }

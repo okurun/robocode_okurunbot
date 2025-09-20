@@ -3,6 +3,8 @@ package okurun.battlemanager;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import okurun.Util.ExponentialMovingAverage;
+
 public class EnemyBattleData {
     public final int enemyId;
 
@@ -10,6 +12,7 @@ public class EnemyBattleData {
     private final AtomicInteger hitCount = new AtomicInteger(0);
     private final AtomicInteger missCount = new AtomicInteger(0);
     private final AtomicInteger noCount = new AtomicInteger(0);
+    private final ExponentialMovingAverage hitDistanceEma = new ExponentialMovingAverage(0);
 
     public EnemyBattleData(int enemyId) {
         this.enemyId = enemyId;
@@ -51,6 +54,10 @@ public class EnemyBattleData {
         noCount.incrementAndGet();
     }
 
+    public void updateHitDistanceEma(double distance) {
+        hitDistanceEma.update(distance);
+    }
+
     public double getHitRate() {
         final int targeted = targetedCount.get() - noCount.get();
         final int hit = hitCount.get();
@@ -65,6 +72,7 @@ public class EnemyBattleData {
                 ", hitCount=" + hitCount +
                 ", missCount=" + missCount +
                 ", noCount=" + noCount +
+                ", hitDistanceEma=" + hitDistanceEma.get() +
                 ", hitRate=" + getHitRate() +
                 '}';
     }
