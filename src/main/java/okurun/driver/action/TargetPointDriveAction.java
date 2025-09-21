@@ -22,7 +22,7 @@ public class TargetPointDriveAction extends AbstractDriveAction {
         if (bot.distanceTo(targetPoint[0], targetPoint[1]) < 50) {
             return null;
         }
-        return this;
+        return null;
     }
 
     @Override

@@ -140,30 +140,6 @@ public class TankCommander implements Commander {
         bot.go();
     }
 
-    private Color getBodyColor() {
-        if (bot.getEnergy() < 10) {
-            final ToggleColor toggleColor = new ToggleColor(Util.BASE_COLOR, Util.RED_COLOR);
-            return toggleColor.get();
-        }
-        if (bot.getEnergy() < 20) {
-            final ToggleColor toggleColor = new ToggleColor(Util.BASE_COLOR, Util.ORANGE_COLOR);
-            return toggleColor.get();
-        }
-        if (bot.getEnergy() < 30) {
-            final ToggleColor toggleColor = new ToggleColor(Util.BASE_COLOR, Util.YELLOW_COLOR);
-            return toggleColor.get();
-        }
-        if (bot.getEnergy() < 40) {
-            final ToggleColor toggleColor = new ToggleColor(Util.BASE_COLOR, Util.WHITE_COLOR);
-            return toggleColor.get();
-        }
-        if (bot.getEnergy() < 50) {
-            final ToggleColor toggleColor = new ToggleColor(Util.BASE_COLOR, Util.BLUE_COLOR);
-            return toggleColor.get();
-        }
-        return Util.BASE_COLOR;
-    }
-
     private TacticStrategy getNextTactic() {
         if (radarOperator.getEnemyCount() > 1) {
             return tactics.get(SurvivalTactic.class.getName());
@@ -402,5 +378,29 @@ public class TankCommander implements Commander {
         driver.onTeamMessage(teamMessageEvent);
         BattleManager.getInstance().onTeamMessage(teamMessageEvent);
         Predictor.getInstance().onTeamMessage(teamMessageEvent);
+    }
+
+    private Color getBodyColor() {
+        if (bot.getEnergy() < 10) {
+            final ToggleColor toggleColor = new ToggleColor(Util.BASE_COLOR, Util.RED_COLOR);
+            return toggleColor.get();
+        }
+        if (bot.getEnergy() < 20) {
+            final ToggleColor toggleColor = new ToggleColor(Util.BASE_COLOR, Util.ORANGE_COLOR);
+            return toggleColor.get();
+        }
+        if (bot.getEnergy() < 30) {
+            final ToggleColor toggleColor = new ToggleColor(Util.BASE_COLOR, Util.YELLOW_COLOR);
+            return toggleColor.get();
+        }
+        if (bot.getEnergy() < 40) {
+            final ToggleColor toggleColor = new ToggleColor(Util.BASE_COLOR, Util.WHITE_COLOR);
+            return toggleColor.get();
+        }
+        if (bot.getEnergy() < 50) {
+            final ToggleColor toggleColor = new ToggleColor(Util.BASE_COLOR, Util.BLUE_COLOR);
+            return toggleColor.get();
+        }
+        return Util.BASE_COLOR;
     }
 }
