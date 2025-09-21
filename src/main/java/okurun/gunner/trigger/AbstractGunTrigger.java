@@ -45,9 +45,6 @@ public abstract class AbstractGunTrigger implements GunTrigger {
         if (distance < 50) {
             return Constants.MAX_FIREPOWER;
         }
-        if (distance > 750) {
-            return 0;
-        }
 
         double firePower = 2;
         if (distance > 250) {

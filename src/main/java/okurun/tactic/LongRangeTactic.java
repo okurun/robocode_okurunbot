@@ -64,10 +64,22 @@ public class LongRangeTactic extends AbstractTactic {
         if (distance < 450) {
             intervalTurnNum += a;
         }
+        if (distance < 500) {
+            intervalTurnNum += a;
+        }
         if (distance < 550) {
             intervalTurnNum += a;
         }
+        if (distance < 600) {
+            intervalTurnNum += a;
+        }
         if (distance < 650) {
+            intervalTurnNum += a;
+        }
+        if (distance < 700) {
+            intervalTurnNum += a;
+        }
+        if (distance < 750) {
             intervalTurnNum += a;
         }
 
@@ -76,6 +88,9 @@ public class LongRangeTactic extends AbstractTactic {
         if (enemyBattleData != null) {
             if (enemyBattleData.getTargetedCount() >= 10) {
                 final double hitRate = enemyBattleData.getHitRate();
+                if (hitRate < 0.5) {
+                    intervalTurnNum += a;
+                }
                 if (hitRate < 0.4) {
                     intervalTurnNum += a;
                 }
@@ -92,6 +107,9 @@ public class LongRangeTactic extends AbstractTactic {
         }
 
         final double energy = bot.getEnergy();
+        if (energy < 50) {
+            intervalTurnNum += a;
+        }
         if (energy < 40) {
             intervalTurnNum += a;
         }
@@ -140,6 +158,7 @@ public class LongRangeTactic extends AbstractTactic {
         return new ApproachDriveAction(commander, targetEnemy, 300);
     }
 
+    @Override
     protected DriveAction getEmergencyDriveAction() {
         final DriveAction action = super.getEmergencyDriveAction();
         if (action != null) {

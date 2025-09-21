@@ -86,7 +86,33 @@ public class SurvivalTactic extends AbstractTactic {
         return new TargetPointDriveAction(commander, targetPoint);
     }
 
-        @Override
+    @Override
+    protected DriveAction getEmergencyDriveAction() {
+        final DriveAction action = super.getEmergencyDriveAction();
+        if (action != null) {
+            return action;
+        }
+
+        final IBot bot = commander.getBot();
+        final RadarOperator radarOperator = commander.getRadarOperator();
+        final EnemyState nearestEnemy = radarOperator.getNearestEnemy();
+        if (nearestEnemy != null) {
+            final Predictor predictor = Predictor.getInstance();
+            final PredictData predictData = predictor.predict(nearestEnemy, bot.getTurnNumber());
+            final double distanceToEnemy;
+            if (predictData != null) {
+                distanceToEnemy = bot.distanceTo(predictData.x, predictData.y);
+            } else {
+                distanceToEnemy = bot.distanceTo(nearestEnemy.x, nearestEnemy.y);
+            }
+            if (distanceToEnemy < 100) {
+                return new EscapeDriveAction(commander, nearestEnemy);
+            }
+        }
+        return null;
+    }
+
+    @Override
     public GunTrigger getNextGunTrigger() {
         final EnemyState targetEnemy = commander.getTargetEnemy();
         if (targetEnemy == null) {
@@ -113,10 +139,22 @@ public class SurvivalTactic extends AbstractTactic {
         if (distance < 450) {
             intervalTurnNum += a;
         }
+        if (distance < 500) {
+            intervalTurnNum += a;
+        }
         if (distance < 550) {
             intervalTurnNum += a;
         }
+        if (distance < 600) {
+            intervalTurnNum += a;
+        }
         if (distance < 650) {
+            intervalTurnNum += a;
+        }
+        if (distance < 700) {
+            intervalTurnNum += a;
+        }
+        if (distance < 750) {
             intervalTurnNum += a;
         }
 
@@ -191,6 +229,9 @@ public class SurvivalTactic extends AbstractTactic {
 
         final Driver driver = commander.getDriver();
         if (driver.getAction() instanceof SideMoveDriveAction) {
+            return new PeriodicTrancemission(commander, 10, 10);
+        }
+        if (driver.getAction() instanceof EscapeDriveAction) {
             return new PeriodicTrancemission(commander, 10, 10);
         }
         return new RandomTrancemission(commander, 9, 1);
