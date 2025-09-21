@@ -280,6 +280,9 @@ public class TankCommander implements Commander {
         driver.onBotDeath(botDeathEvent);
         BattleManager.getInstance().onBotDeath(botDeathEvent);
         Predictor.getInstance().onBotDeath(botDeathEvent);
+        if (botDeathEvent.getVictimId() == targetEnemyId.get()) {
+            targetEnemyId.set(tactic.getTargetEnemyId());
+        }
     }
 
     @Override
