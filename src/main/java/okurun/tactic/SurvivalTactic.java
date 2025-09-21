@@ -82,6 +82,6 @@ public class SurvivalTactic extends AbstractTactic {
 
     @Override
     public Color getScanColor() {
-        return Util.BASE_COLOR;
+        return Util.LIGHT_YELLOW_COLOR;
     }
 }

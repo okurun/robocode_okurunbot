@@ -11,6 +11,6 @@ public class MiddleRangeTactic extends AbstractTactic {
 
     @Override
     public Color getScanColor() {
-        return Util.LIGHT_YELLOW_COLOR;
+        return Util.LIGHT_COLOR;
     }
 }

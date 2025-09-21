@@ -11,6 +11,6 @@ public class CloseRangeTactic extends AbstractTactic {
 
     @Override
     public Color getScanColor() {
-        return Util.YELLOW_COLOR;
+        return Util.BASE_COLOR;
     }
 }
