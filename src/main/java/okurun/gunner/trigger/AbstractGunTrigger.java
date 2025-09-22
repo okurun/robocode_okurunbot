@@ -33,7 +33,7 @@ public abstract class AbstractGunTrigger implements GunTrigger {
     private double calcFirePowoer() {
         final EnemyState targetEnemy = getTargetEnemy();
         if (targetEnemy.energy <= 0) {
-            return Constants.MAX_FIREPOWER;
+            return Constants.MIN_FIREPOWER;
         }
         final IBot bot = commander.getBot();
         final Predictor predictor = Predictor.getInstance();

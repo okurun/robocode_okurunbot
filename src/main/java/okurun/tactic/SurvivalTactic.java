@@ -238,6 +238,34 @@ public class SurvivalTactic extends AbstractTactic {
     }
 
     @Override
+    public int getTargetEnemyId() {
+        final RadarOperator radarOperator = commander.getRadarOperator();
+        final EnemyState enemy = radarOperator.getNearestEnemy();
+        if (enemy != null) {
+            final IBot bot = commander.getBot();
+            final Predictor predictor = Predictor.getInstance();
+            final PredictData predictData = predictor.predict(enemy, bot.getTurnNumber());
+            double[] pos;
+            if (predictData != null) {
+                pos = predictData.getPosition();
+            } else {
+                pos = new double[] {enemy.x, enemy.y};
+            }
+            final double distanceToEnemy = bot.distanceTo(pos[0], pos[1]);
+            if (distanceToEnemy < 400) {
+                return enemy.enemyId;
+            }
+            final BattleManager battleManager = BattleManager.getInstance();
+            final EnemyBattleData enemyBattleData = battleManager.getEnemyBattleDataList().stream()
+                .filter(ebd -> !radarOperator.isDeathBot(ebd.enemyId))
+                .max(Comparator.comparingDouble(ebd -> ebd.getHitRate()))
+                .orElse(null);
+            return enemyBattleData.enemyId;
+        }
+        return 0;
+    }
+
+    @Override
     public Color getScanColor() {
         return Util.LIGHT_YELLOW_COLOR;
     }

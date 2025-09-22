@@ -50,6 +50,9 @@ public class RadarOperator {
         return enemyStates.get(enemyId);
     }
 
+    public boolean isDeathBot(int enemyId) {
+        return deathBots.contains(enemyId);
+    }
     public int getEnemyCount() {
         return getEnemyStates().size();
     }

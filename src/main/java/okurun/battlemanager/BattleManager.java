@@ -1,6 +1,7 @@
 package okurun.battlemanager;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -41,6 +42,11 @@ public class BattleManager {
 
     public EnemyBattleData getEnemyBattleData(int enemyId) {
         return enemyBattleDataMap.get(enemyId);
+    }
+
+    public List<EnemyBattleData> getEnemyBattleDataList() {
+        return enemyBattleDataMap.values().stream()
+            .toList();
     }
 
     public BulletData getBulletData(int bulletId) {
