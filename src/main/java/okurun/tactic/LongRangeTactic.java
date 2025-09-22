@@ -15,6 +15,7 @@ import okurun.driver.action.DriveAction;
 import okurun.driver.action.EscapeDriveAction;
 import okurun.driver.action.SideMoveDriveAction;
 import okurun.driver.handle.Handle;
+import okurun.driver.handle.RandmoSwervingHandle;
 import okurun.driver.handle.SwervingHandle;
 import okurun.driver.trancemission.PeriodicTrancemission;
 import okurun.driver.trancemission.RandomTrancemission;
@@ -189,8 +190,8 @@ public class LongRangeTactic extends AbstractTactic {
     @Override
     public List<Handle> getHandles() {
         return List.of(
-            new SwervingHandle(commander, 16, 15),
-            new SwervingHandle(commander, 4, 30)
+            new SwervingHandle(commander, 16, 30),
+            new RandmoSwervingHandle(commander, 15)
         );
     }
 

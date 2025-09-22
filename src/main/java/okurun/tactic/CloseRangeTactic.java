@@ -7,8 +7,7 @@ import dev.robocode.tankroyale.botapi.graphics.Color;
 import okurun.Commander;
 import okurun.Util;
 import okurun.driver.action.*;
-import okurun.driver.handle.Handle;
-import okurun.driver.handle.SwervingHandle;
+import okurun.driver.handle.*;
 import okurun.driver.trancemission.Trancemission;
 import okurun.gunner.trigger.*;
 import okurun.predictor.PredictData;
@@ -93,8 +92,7 @@ public class CloseRangeTactic extends AbstractTactic {
     @Override
     public List<Handle> getHandles() {
         return List.of(
-            new SwervingHandle(commander, 16, 15),
-            new SwervingHandle(commander, 4, 30)
+            new RandmoSwervingHandle(commander, 20)
         );
     }
 

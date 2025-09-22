@@ -11,6 +11,7 @@ import okurun.battlemanager.EnemyBattleData;
 import okurun.driver.Driver;
 import okurun.driver.action.*;
 import okurun.driver.handle.Handle;
+import okurun.driver.handle.RandmoSwervingHandle;
 import okurun.driver.handle.SwervingHandle;
 import okurun.driver.trancemission.PeriodicTrancemission;
 import okurun.driver.trancemission.RandomTrancemission;
@@ -152,8 +153,8 @@ public class MiddleRangeTactic extends AbstractTactic {
     @Override
     public List<Handle> getHandles() {
         return List.of(
-            new SwervingHandle(commander, 16, 15),
-            new SwervingHandle(commander, 4, 30)
+            new SwervingHandle(commander, 16, 20),
+            new RandmoSwervingHandle(commander, 20)
         );
     }
 

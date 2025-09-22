@@ -198,8 +198,8 @@ public class SurvivalTactic extends AbstractTactic {
     @Override
     public List<Handle> getHandles() {
         return List.of(
-            new SwervingHandle(commander, 16, 15),
-            new SwervingHandle(commander, 4, 30)
+            new SwervingHandle(commander, 16, 30),
+            new RandmoSwervingHandle(commander, 15)
         );
     }
 
