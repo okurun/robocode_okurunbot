@@ -13,6 +13,9 @@ import okurun.predictor.Predictor;
 import okurun.radaroperator.EnemyState;
 import okurun.radaroperator.RadarOperator;
 
+/**
+ * 壁から離れるDriveAction
+ */
 public class AvoidWallDriveAction extends AbstractDriveAction {
 
     public AvoidWallDriveAction(Commander commander) {
@@ -49,6 +52,7 @@ public class AvoidWallDriveAction extends AbstractDriveAction {
             if (predictedEnemy != null) {
                 final double distanceToEnemy = bot.distanceTo(predictedEnemy.x, predictedEnemy.y);
                 if (distanceToEnemy < 100) {
+                    // 進行方向の近くに敵がいたら進行方向を変える
                     final double degreeToEnemy = bot.bearingTo(predictedEnemy.x, predictedEnemy.y);
                     if (speed > 0 && Math.abs(degreeToEnemy) < 45) {
                         turnDegree = bot.normalizeRelativeAngle(degreeToWall + 180);

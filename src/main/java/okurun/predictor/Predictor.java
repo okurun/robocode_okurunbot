@@ -49,13 +49,15 @@ public class Predictor {
             .min(Comparator.comparingInt(pm -> pm.getFiredCount()))
             .get();
         if (unUserbleModel.getFiredCount() < 10) {
+            // どのモデルも最低10発は射撃する
             PredictData predictData = unUserbleModel.predict(enemyState, predictTurnNum);
             if (predictData != null) {
                 return predictData;
             }
         }
+        // 失敗率の低いモデルを選ぶ
         final List<PredictModel> models = predictModels.get(enemyState.enemyId).values().stream()
-            .sorted(Comparator.comparingDouble(pm -> Math.min(pm.getMissRate(), 0.9)))
+            .sorted(Comparator.comparingDouble(pm -> Math.min(pm.getMissRate(), 0.9))) // 失敗率が100%にならないようにする
             .toList();
         for (PredictModel model : models) {
             final PredictData data = model.predict(enemyState, predictTurnNum);

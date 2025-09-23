@@ -7,6 +7,9 @@ import okurun.Util;
 import okurun.battlemanager.BattleManager;
 import okurun.battlemanager.BulletData;
 
+/**
+ * 一定間隔を空けて射撃する
+ */
 public class PeriodicGunTrigger extends AbstractGunTrigger {
     private final int intervalTurnNum;
 

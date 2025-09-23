@@ -24,6 +24,9 @@ import okurun.radaroperator.EnemyState;
 import okurun.radaroperator.RadarOperator;
 import okurun.radaroperator.action.*;
 
+/**
+ * 乱戦戦闘戦術
+ */
 public class SurvivalTactic extends AbstractTactic {
 
     public SurvivalTactic(Commander commander) {
@@ -229,7 +232,7 @@ public class SurvivalTactic extends AbstractTactic {
 
         final Driver driver = commander.getDriver();
         if (driver.getAction() instanceof SideMoveDriveAction) {
-            return new PeriodicTrancemission(commander, 10, 10);
+            return new PeriodicTrancemission(commander, 16, 16);
         }
         if (driver.getAction() instanceof EscapeDriveAction) {
             return new PeriodicTrancemission(commander, 10, 10);

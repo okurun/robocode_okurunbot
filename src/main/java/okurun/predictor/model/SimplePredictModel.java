@@ -9,6 +9,9 @@ import okurun.arenamap.ArenaMap;
 import okurun.predictor.PredictData;
 import okurun.radaroperator.EnemyState;
 
+/**
+ * 速度、方向、操舵角から予測する
+ */
 public class SimplePredictModel extends PredictModel {
     private final Map<Integer, PredictData> cache = new HashMap<>();
 

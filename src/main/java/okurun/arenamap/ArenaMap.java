@@ -163,6 +163,9 @@ public class ArenaMap {
         return keepPositionInArena(pos[0], pos[1], beforePos[0], beforePos[1]);
     }
 
+    /**
+     * 壁にぶつかった場合にぶつかった位置を維持する
+     */
     public double[] keepPositionInArena(double x, double y, double beforeX, double beforeY) {
         final double minX = Commander.BODY_SIZE;
         final double maxX = width - Commander.BODY_SIZE;

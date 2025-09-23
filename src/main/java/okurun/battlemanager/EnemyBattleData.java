@@ -64,6 +64,7 @@ public class EnemyBattleData {
         if (targeted == 0 || hit == 0) return 0.0;
         return (double) hit / targeted;
     }
+
     @Override
     public String toString() {
         return "EnemyBattleData{" +

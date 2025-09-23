@@ -9,6 +9,9 @@ import okurun.predictor.PredictData;
 import okurun.predictor.Predictor;
 import okurun.radaroperator.EnemyState;
 
+/**
+ * 敵から逃げるDriveAction
+ */
 public class EscapeDriveAction extends AbstractDriveAction {
     private final EnemyState enemy;
 

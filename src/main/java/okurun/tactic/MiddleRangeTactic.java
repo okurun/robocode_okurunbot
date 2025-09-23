@@ -10,18 +10,17 @@ import okurun.battlemanager.BattleManager;
 import okurun.battlemanager.EnemyBattleData;
 import okurun.driver.Driver;
 import okurun.driver.action.*;
-import okurun.driver.handle.Handle;
-import okurun.driver.handle.RandmoSwervingHandle;
-import okurun.driver.handle.SwervingHandle;
-import okurun.driver.trancemission.PeriodicTrancemission;
-import okurun.driver.trancemission.RandomTrancemission;
-import okurun.driver.trancemission.Trancemission;
+import okurun.driver.handle.*;
+import okurun.driver.trancemission.*;
 import okurun.gunner.trigger.*;
 import okurun.predictor.PredictData;
 import okurun.predictor.Predictor;
 import okurun.radaroperator.EnemyState;
 import okurun.radaroperator.RadarOperator;
 
+/**
+ * 中距離戦闘戦術
+ */
 public class MiddleRangeTactic extends AbstractTactic {
     public MiddleRangeTactic(Commander commander) {
         super(commander);

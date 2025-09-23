@@ -10,6 +10,9 @@ import okurun.predictor.PredictData;
 import okurun.predictor.Predictor;
 import okurun.radaroperator.EnemyState;
 
+/**
+ * 敵に対して横を向いて進むDriveAction
+ */
 public class SideMoveDriveAction extends AbstractDriveAction {
     private final EnemyState enemy;
     private final double distance;

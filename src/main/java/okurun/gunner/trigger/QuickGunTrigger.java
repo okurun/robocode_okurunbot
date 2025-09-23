@@ -5,6 +5,9 @@ import dev.robocode.tankroyale.botapi.graphics.Color;
 import okurun.Commander;
 import okurun.Util;
 
+/**
+ * 射撃可能になったらすぐに撃つ
+ */
 public class QuickGunTrigger extends AbstractGunTrigger {
     public QuickGunTrigger(Commander commander) {
         super(commander);

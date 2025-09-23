@@ -11,6 +11,9 @@ import okurun.arenamap.ArenaMap;
 import okurun.predictor.PredictData;
 import okurun.radaroperator.EnemyState;
 
+/**
+ * 行動履歴を逆再生して予測する
+ */
 public class MoveHistoryPredictModel extends PredictModel {
     private final Map<Integer, PredictData> cache = new HashMap<>();
 

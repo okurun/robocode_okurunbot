@@ -21,6 +21,7 @@ public class NormalGunAction extends AbstractGunAction {
             return null;
         }
         if (targetEnemy.energy <= 0) {
+            // 動けなくなっているのでスキャンした位置に向かって撃つ
             final IBot bot = commander.getBot();
             final double distance = bot.distanceTo(targetEnemy.x, targetEnemy.y);
             final double firePower = trigger.getFirePower();
@@ -48,6 +49,7 @@ public class NormalGunAction extends AbstractGunAction {
         final double bulletSpeed = bot.calcBulletSpeed(Math.max(firePower, 1));
         double distance = 0;
         PredictData predictData = null;
+        // １ターンづつ弾が当たるかシミュレーションして当たる位置を返す
         for (int i = 1; i < 70; i++) {
             predictData = predictor.predict(targetEnemy, nextFireTurnNum + i);
             if (predictData == null) {

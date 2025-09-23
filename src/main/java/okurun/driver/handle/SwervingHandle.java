@@ -2,6 +2,9 @@ package okurun.driver.handle;
 
 import okurun.Commander;
 
+/**
+ * 定期的にハンドルを左右に揺らす
+ */
 public class SwervingHandle extends Handle {
     private final double waveLength;
     private final double swarvePower;

@@ -26,12 +26,8 @@ public class Driver {
         if (this.action == null) {
             this.action = commander.getNextDriveAction();            
         }
-        if (this.handles == null) {
-            this.handles = commander.getHandles();
-        }
-        if (this.trancemission == null) {
-            this.trancemission = commander.getTrancemission();
-        }
+        this.handles = commander.getHandles();
+        this.trancemission = commander.getTrancemission();
         final DriveAction nextAction = this.action.action();
         final IBot bot = commander.getBot();
         bot.setTracksColor(this.action.getTracksColor());

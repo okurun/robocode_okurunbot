@@ -8,13 +8,16 @@ import okurun.Commander;
 import okurun.Util;
 import okurun.driver.action.*;
 import okurun.driver.handle.*;
-import okurun.driver.trancemission.Trancemission;
+import okurun.driver.trancemission.*;
 import okurun.gunner.trigger.*;
 import okurun.predictor.PredictData;
 import okurun.predictor.Predictor;
 import okurun.radaroperator.EnemyState;
 import okurun.radaroperator.RadarOperator;
 
+/**
+ * 近距離戦闘戦術
+ */
 public class CloseRangeTactic extends AbstractTactic {
     public CloseRangeTactic(Commander commander) {
         super(commander);

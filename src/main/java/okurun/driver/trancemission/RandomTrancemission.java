@@ -4,6 +4,9 @@ import java.util.Random;
 
 import okurun.Commander;
 
+/**
+ * ランダムに前進、後進を切り替える
+ */
 public class RandomTrancemission extends Trancemission {
     private final int forwardTurnNum;
     private final int backwardTurnNum;

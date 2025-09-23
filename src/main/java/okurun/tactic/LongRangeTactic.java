@@ -9,25 +9,18 @@ import okurun.Util;
 import okurun.battlemanager.BattleManager;
 import okurun.battlemanager.EnemyBattleData;
 import okurun.driver.Driver;
-import okurun.driver.action.ApproachDriveAction;
-import okurun.driver.action.ChargeDriveAction;
-import okurun.driver.action.DriveAction;
-import okurun.driver.action.EscapeDriveAction;
-import okurun.driver.action.SideMoveDriveAction;
-import okurun.driver.handle.Handle;
-import okurun.driver.handle.RandmoSwervingHandle;
-import okurun.driver.handle.SwervingHandle;
-import okurun.driver.trancemission.PeriodicTrancemission;
-import okurun.driver.trancemission.RandomTrancemission;
-import okurun.driver.trancemission.Trancemission;
-import okurun.gunner.trigger.GunTrigger;
-import okurun.gunner.trigger.PeriodicGunTrigger;
-import okurun.gunner.trigger.QuickGunTrigger;
+import okurun.driver.action.*;
+import okurun.driver.handle.*;
+import okurun.driver.trancemission.*;
+import okurun.gunner.trigger.*;
 import okurun.predictor.PredictData;
 import okurun.predictor.Predictor;
 import okurun.radaroperator.EnemyState;
 import okurun.radaroperator.RadarOperator;
 
+/**
+ * 長距離戦闘戦術
+ */
 public class LongRangeTactic extends AbstractTactic {
     public LongRangeTactic(Commander commander) {
         super(commander);

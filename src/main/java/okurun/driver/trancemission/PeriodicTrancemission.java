@@ -2,6 +2,9 @@ package okurun.driver.trancemission;
 
 import okurun.Commander;
 
+/**
+ * 定期的に前進、後進を切り替える
+ */
 public class PeriodicTrancemission extends Trancemission {
     private final int forwardTurnNum;
     private final int backwardTurnNum;

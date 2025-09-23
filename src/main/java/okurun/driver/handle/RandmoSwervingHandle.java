@@ -4,6 +4,9 @@ import java.util.Random;
 
 import okurun.Commander;
 
+/**
+ * ランダムにハンドルを左右に揺らす
+ */
 public class RandmoSwervingHandle extends Handle {
     private final double swarvePower;
     private final Random random = new Random();
