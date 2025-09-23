@@ -7,8 +7,12 @@ repositories {
     mavenCentral()
 }
 
+ext {
+    tankRoyaleVersion = '0.33.1'
+}
+
 dependencies {
-    implementation files('./robocode-tankroyale-bot-api-0.33.1.jar')
+    implementation "dev.robocode.tankroyale:robocode-tankroyale-bot-api:${tankRoyaleVersion}"
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
 }
