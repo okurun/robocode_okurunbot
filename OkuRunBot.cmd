@@ -1,2 +1,2 @@
-./gradlew build
-./gradlew run
+./gradlew build >nul
+./gradlew run >nul
