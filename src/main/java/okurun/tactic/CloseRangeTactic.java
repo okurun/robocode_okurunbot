@@ -100,7 +100,7 @@ public class CloseRangeTactic extends AbstractTactic {
     }
 
     @Override
-    public Trancemission getTrancemission() {
+    public List<Trancemission> getTrancemissions() {
         return null;
     }
 }

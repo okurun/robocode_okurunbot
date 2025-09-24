@@ -43,9 +43,17 @@ public class SideMoveDriveAction extends AbstractDriveAction {
             final Direction direction = (degreeToEnemy < 0) ? Direction.LEFT : Direction.RIGHT;
             double baseDegree = 90;
             if (distanceToEnemy < this.distance) {
-                baseDegree += 10;
+                if (bot.getSpeed() > 0) {
+                    baseDegree += 10;
+                } else {
+                    baseDegree -= 10;
+                }
             } else if (distanceToEnemy > this.distance) {
-                baseDegree -= 10;
+                if (bot.getSpeed() > 0) {
+                    baseDegree -= 10;
+                } else {
+                    baseDegree += 10;
+                }
             }
             turnDegree = (baseDegree - Math.abs(degreeToEnemy)) * direction.value;
         }

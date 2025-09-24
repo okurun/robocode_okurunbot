@@ -26,7 +26,7 @@ public interface TacticStrategy {
 
     List<Handle> getHandles();
 
-    Trancemission getTrancemission();
+    List<Trancemission> getTrancemissions();
 
     default void onConnected(ConnectedEvent connectedEvent) {
     }

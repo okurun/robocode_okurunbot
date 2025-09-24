@@ -12,7 +12,7 @@ import okurun.driver.trancemission.Trancemission;
 public class Driver {
     private Commander commander;
     private DriveAction action;
-    private Trancemission trancemission;
+    private List<Trancemission> trancemissions;
     private List<Handle> handles;
 
     public Driver() {
@@ -27,7 +27,7 @@ public class Driver {
             this.action = commander.getNextDriveAction();            
         }
         this.handles = commander.getHandles();
-        this.trancemission = commander.getTrancemission();
+        this.trancemissions = commander.getTrancemissions();
         final DriveAction nextAction = this.action.action();
         final IBot bot = commander.getBot();
         bot.setTracksColor(this.action.getTracksColor());
@@ -41,8 +41,10 @@ public class Driver {
         bot.setTurnLeft(turnDegree);
 
         double speed = this.action.getTargetSpeed();
-        if (this.trancemission != null) {
-            speed = this.trancemission.changeGear(speed);
+        if (this.trancemissions != null) {
+            for (final Trancemission trancemission : this.trancemissions) {
+                speed = trancemission.changeGear(speed);
+            }
         }
         bot.setTargetSpeed(speed);
         action = nextAction;

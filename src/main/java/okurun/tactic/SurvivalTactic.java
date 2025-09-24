@@ -1,5 +1,6 @@
 package okurun.tactic;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -207,12 +208,15 @@ public class SurvivalTactic extends AbstractTactic {
     }
 
     @Override
-    public Trancemission getTrancemission() {
+    public List<Trancemission> getTrancemissions() {
+        final List<Trancemission> trancemissions = new ArrayList<>();
+        trancemissions.add(new TriggerShiftTransmission(commander));
+
         final EnemyState targetEnemy = commander.getTargetEnemy();
         if (targetEnemy != null) {
             final IBot bot = commander.getBot();
             if (bot.getEnergy() - targetEnemy.energy > 20) {
-                return null;
+                return trancemissions;
             }
 
             final Predictor predictor = Predictor.getInstance();
@@ -225,19 +229,20 @@ public class SurvivalTactic extends AbstractTactic {
             }
             if (bot.getEnergy() - targetEnemy.energy < -20) {
                 if (distanceToEnemy < 200) {
-                    return null;
+                    return trancemissions;
                 }
             }
         }
 
         final Driver driver = commander.getDriver();
         if (driver.getAction() instanceof SideMoveDriveAction) {
-            return new PeriodicTrancemission(commander, 16, 16);
+            trancemissions.add(new PeriodicTrancemission(commander, 20, 20));
+        } else if (driver.getAction() instanceof EscapeDriveAction) {
+            trancemissions.add(new PeriodicTrancemission(commander, 10, 10));
+        } else {
+            trancemissions.add(new RandomTrancemission(commander, 9, 1));
         }
-        if (driver.getAction() instanceof EscapeDriveAction) {
-            return new PeriodicTrancemission(commander, 10, 10);
-        }
-        return new RandomTrancemission(commander, 9, 1);
+        return trancemissions;
     }
 
     @Override

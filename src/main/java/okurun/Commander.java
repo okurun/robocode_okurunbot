@@ -46,7 +46,7 @@ public interface Commander {
 
     List<Handle> getHandles();
 
-    Trancemission getTrancemission();
+    List<Trancemission> getTrancemissions();
 
     default void onConnected(ConnectedEvent connectedEvent) {
     }

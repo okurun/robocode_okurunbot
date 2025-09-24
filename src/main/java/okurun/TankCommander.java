@@ -170,9 +170,9 @@ public class TankCommander implements Commander {
     }
 
     @Override
-    public Trancemission getTrancemission() {
+    public List<Trancemission> getTrancemissions() {
         if (tactic != null) {
-            return tactic.getTrancemission();
+            return tactic.getTrancemissions();
         }
         return null;
     }

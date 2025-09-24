@@ -1,5 +1,6 @@
 package okurun.tactic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dev.robocode.tankroyale.botapi.IBot;
@@ -158,12 +159,15 @@ public class MiddleRangeTactic extends AbstractTactic {
     }
 
     @Override
-    public Trancemission getTrancemission() {
+    public List<Trancemission> getTrancemissions() {
+        final List<Trancemission> trancemissions = new ArrayList<>();
+        trancemissions.add(new TriggerShiftTransmission(commander));
+
         final EnemyState targetEnemy = commander.getTargetEnemy();
         if (targetEnemy != null) {
             final IBot bot = commander.getBot();
             if (bot.getEnergy() - targetEnemy.energy > 20) {
-                return null;
+                return trancemissions;
             }
 
             final Predictor predictor = Predictor.getInstance();
@@ -176,15 +180,17 @@ public class MiddleRangeTactic extends AbstractTactic {
             }
             if (bot.getEnergy() - targetEnemy.energy < -20) {
                 if (distanceToEnemy < 200) {
-                    return null;
+                    return trancemissions;
                 }
             }
         }
 
         final Driver driver = commander.getDriver();
         if (driver.getAction() instanceof SideMoveDriveAction) {
-            return new PeriodicTrancemission(commander, 10, 10);
+            trancemissions.add(new PeriodicTrancemission(commander, 10, 10));
+        } else {
+            trancemissions.add(new RandomTrancemission(commander, 9, 1));
         }
-        return new RandomTrancemission(commander, 9, 1);
+        return trancemissions;
     }
 }
