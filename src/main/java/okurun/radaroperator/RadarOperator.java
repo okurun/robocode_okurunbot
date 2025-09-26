@@ -140,7 +140,7 @@ public class RadarOperator {
         ));
         int i = 0;
         while ((previousState = previousState.previousState) != null) {
-            if (++i >= 10) {
+            if (++i >= 30) {
                 previousState.deletePreviousState();
                 break;
             }

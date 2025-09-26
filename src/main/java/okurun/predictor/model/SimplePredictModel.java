@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import dev.robocode.tankroyale.botapi.graphics.Color;
+import okurun.Commander;
 import okurun.Util;
 import okurun.arenamap.ArenaMap;
 import okurun.predictor.PredictData;
@@ -13,6 +14,10 @@ import okurun.radaroperator.EnemyState;
  * 速度、方向、操舵角から予測する
  */
 public class SimplePredictModel extends PredictModel {
+    public SimplePredictModel(Commander commander) {
+        super(commander);
+    }
+
     private final Map<Integer, PredictData> cache = new HashMap<>();
 
     public PredictData predict(EnemyState enemyState, int predictTurnNum) {

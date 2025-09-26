@@ -14,11 +14,8 @@ import okurun.arenamap.ArenaMap;
 import okurun.predictor.PredictData;
 import okurun.radaroperator.EnemyState;
 
-/**
- * 行動履歴を逆再生して予測する
- */
-public class MoveHistoryPredictModel extends PredictModel {
-    public MoveHistoryPredictModel(Commander commander) {
+public class MoveHistoryRPredictModel extends PredictModel {
+    public MoveHistoryRPredictModel(Commander commander) {
         super(commander);
     }
 
@@ -90,7 +87,7 @@ public class MoveHistoryPredictModel extends PredictModel {
             patterns.add(new MovePattern(velocity, turnDegree));
             current = current.previousState;
         }
-        return patterns;
+        return patterns.reversed();
     }
 
     private static class MovePattern {
@@ -105,7 +102,7 @@ public class MoveHistoryPredictModel extends PredictModel {
 
     @Override
     public Color getBulletColor() {
-        return Util.YELLOW_COLOR;
+        return Util.ORANGE_COLOR;
     }
 
     @Override

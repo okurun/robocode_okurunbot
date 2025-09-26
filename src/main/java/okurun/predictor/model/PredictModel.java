@@ -3,6 +3,7 @@ package okurun.predictor.model;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import dev.robocode.tankroyale.botapi.graphics.Color;
+import okurun.Commander;
 import okurun.predictor.PredictData;
 import okurun.radaroperator.EnemyState;
 
@@ -11,8 +12,10 @@ public abstract class PredictModel {
     private final AtomicInteger hitCount = new AtomicInteger(0);
     private final AtomicInteger missCount = new AtomicInteger(0);
     private final AtomicInteger noCount = new AtomicInteger(0);
+    protected final Commander commander;
 
-    public PredictModel() {
+    public PredictModel(Commander commander) {
+        this.commander = commander;
     }
 
     public int getFiredCount() {

@@ -34,8 +34,9 @@ public class Predictor {
             if (i == bot.getMyId()) continue;
             if (predictModels.get(i) != null) continue;
             predictModels.put(i, Map.of(
-                SimplePredictModel.class.getSimpleName(), new SimplePredictModel(),
-                MoveHistoryPredictModel.class.getSimpleName(), new MoveHistoryPredictModel()
+                SimplePredictModel.class.getSimpleName(), new SimplePredictModel(commander),
+                MoveHistoryPredictModel.class.getSimpleName(), new MoveHistoryPredictModel(commander),
+                MoveHistoryRPredictModel.class.getSimpleName(), new MoveHistoryRPredictModel(commander)
             ));
         }
     }
