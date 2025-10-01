@@ -1,5 +1,6 @@
 package okurun.gunner.action;
 
+import dev.robocode.tankroyale.botapi.Constants;
 import dev.robocode.tankroyale.botapi.IBot;
 import okurun.Commander;
 import okurun.gunner.ShootingTarget;
@@ -46,7 +47,7 @@ public class NormalGunAction extends AbstractGunAction {
         final int nextFireTurnNum = trigger.getNextFireTurnNum();
         final double firePower = trigger.getFirePower();
         final Predictor predictor = Predictor.getInstance();
-        final double bulletSpeed = bot.calcBulletSpeed(Math.max(firePower, 1));
+        final double bulletSpeed = bot.calcBulletSpeed(Math.max(firePower, Constants.MIN_FIREPOWER));
         double distance = 0;
         PredictData predictData = null;
         // １ターンづつ弾が当たるかシミュレーションして当たる位置を返す
@@ -56,7 +57,7 @@ public class NormalGunAction extends AbstractGunAction {
                 return null;
             }
             distance = bot.distanceTo(predictData.x, predictData.y);
-            if (Math.abs(distance - (bulletSpeed * i)) < 10) {
+            if (distance - (bulletSpeed * i) < 0) {
                 return new ShootingTarget(
                     targetEnemy.enemyId,
                     firePower,

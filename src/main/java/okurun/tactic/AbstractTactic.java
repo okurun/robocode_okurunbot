@@ -61,7 +61,7 @@ public abstract class AbstractTactic implements TacticStrategy {
         final ArenaMap arenaMap = ArenaMap.getInstance();
         final Wall nearestWall = arenaMap.getNearestWall(bot);
         final double distanceToWall = nearestWall.distanceTo(bot);
-        if (distanceToWall < 45) {
+        if (distanceToWall < 60) {
             return new AvoidWallDriveAction(commander);
         }
         return null;

@@ -205,6 +205,9 @@ public class LongRangeTactic extends AbstractTactic {
         final Driver driver = commander.getDriver();
         if (driver.getAction() instanceof SideMoveDriveAction) {
             trancemissions.add(new PeriodicTrancemission(commander, 30, 30));
+        } else if (driver.getAction() instanceof EscapeDriveAction ||
+                   driver.getAction() instanceof AvoidWallDriveAction) {
+            // trancemissions.add(new PeriodicTrancemission(commander, 15, 15));
         } else {
             trancemissions.add(new RandomTrancemission(commander, 9, 1));
         }

@@ -13,7 +13,7 @@ public class OkuRunBot extends Bot {
 
     public OkuRunBot() {
         super();
-        commander = new TankCommander();
+        commander = new Commander();
     }
 
     @Override

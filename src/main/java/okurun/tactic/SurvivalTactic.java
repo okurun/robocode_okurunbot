@@ -135,8 +135,8 @@ public class SurvivalTactic extends AbstractTactic {
             return new QuickGunTrigger(commander);
         }
 
-        int intervalTurnNum = 15;
-        final int a = 3;
+        int intervalTurnNum = 16;
+        final int a = 2;
         if (distance < 350) {
             intervalTurnNum += a;
         }
@@ -236,9 +236,10 @@ public class SurvivalTactic extends AbstractTactic {
 
         final Driver driver = commander.getDriver();
         if (driver.getAction() instanceof SideMoveDriveAction) {
-            trancemissions.add(new PeriodicTrancemission(commander, 20, 20));
-        } else if (driver.getAction() instanceof EscapeDriveAction) {
-            trancemissions.add(new PeriodicTrancemission(commander, 10, 10));
+            trancemissions.add(new PeriodicTrancemission(commander, 30, 30));
+        } else if (driver.getAction() instanceof EscapeDriveAction ||
+                   driver.getAction() instanceof AvoidWallDriveAction) {
+            // trancemissions.add(new PeriodicTrancemission(commander, 15, 15));
         } else {
             trancemissions.add(new RandomTrancemission(commander, 9, 1));
         }

@@ -1,5 +1,6 @@
 package okurun.predictor;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,10 @@ import okurun.predictor.model.*;
 import okurun.radaroperator.EnemyState;
 
 public class Predictor {
+    static enum Distance {
+        CLOSE, MID, FAR
+    }
+
     private static Predictor instance;
     public static Predictor getInstance() {
         if (instance == null) {
@@ -23,30 +28,40 @@ public class Predictor {
         return instance;
     }
 
-    private final Map<Integer, Map<String, PredictModel>> predictModels = new HashMap<>();
+    private final Map<Integer, Map<Distance, Map<String, PredictModel>>> predictModelMap = new HashMap<>();
+    private Commander commander;
 
     private Predictor() {
     }
 
     public void init(Commander commander) {
+        this.commander = commander;
         final IBot bot = commander.getBot();
+        final List<Distance> distances = List.of(Distance.CLOSE, Distance.MID, Distance.FAR);
         for (int i = 1; i <= bot.getEnemyCount() + 1; i++) {
             if (i == bot.getMyId()) continue;
-            if (predictModels.get(i) != null) continue;
-            predictModels.put(i, Map.of(
-                SimplePredictModel.class.getSimpleName(), new SimplePredictModel(commander),
-                MoveHistoryPredictModel.class.getSimpleName(), new MoveHistoryPredictModel(commander),
-                MoveHistoryRPredictModel.class.getSimpleName(), new MoveHistoryRPredictModel(commander)
-            ));
+            if (predictModelMap.get(i) != null) continue;
+            final Map<Distance, Map<String, PredictModel>> distanceMap = new HashMap<>();
+            for (Distance distance : distances) {
+                distanceMap.put(distance, new HashMap<>(Map.of(
+                    SimplePredictModel.class.getSimpleName(), new SimplePredictModel(commander),
+                    MoveHistoryPredictModel.class.getSimpleName(), new MoveHistoryPredictModel(commander),
+                    MoveHistoryRPredictModel.class.getSimpleName(), new MoveHistoryRPredictModel(commander)
+                )));
+            }
+            predictModelMap.put(i, distanceMap);
         }
     }
 
     public void clearCache() {
-        predictModels.values().forEach(m -> m.values().forEach(PredictModel::clearCache));
+        this.predictModelMap.values().forEach(d -> d.values().forEach(m -> m.values().forEach(PredictModel::clearCache)));
     }
 
     public PredictData predict(EnemyState enemyState, int predictTurnNum) {
-        final PredictModel unUserbleModel = predictModels.get(enemyState.enemyId).values().stream()
+        final IBot bot = commander.getBot();
+        final Distance distance = getDistance(bot.distanceTo(enemyState.x, enemyState.y));
+        final Collection<PredictModel> predictModels = this.predictModelMap.get(enemyState.enemyId).get(distance).values();
+        final PredictModel unUserbleModel = predictModels.stream()
             .min(Comparator.comparingInt(pm -> pm.getFiredCount()))
             .get();
         if (unUserbleModel.getFiredCount() < 10) {
@@ -57,7 +72,7 @@ public class Predictor {
             }
         }
         // 失敗率の低いモデルを選ぶ
-        final List<PredictModel> models = predictModels.get(enemyState.enemyId).values().stream()
+        final List<PredictModel> models = predictModels.stream()
             .sorted(Comparator.comparingDouble(pm -> Math.min(pm.getMissRate(), 0.9))) // 失敗率が100%にならないようにする
             .toList();
         for (PredictModel model : models) {
@@ -69,15 +84,30 @@ public class Predictor {
         return null;
     }
 
+    private Distance getDistance(double distanceToEnemy) {
+        if (distanceToEnemy < 200) {
+            return Distance.CLOSE;
+        } else if (distanceToEnemy < 400) {
+            return Distance.MID;
+        } else {
+            return Distance.FAR;
+        }
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("Predictor{\n");
-        for (Map.Entry<Integer, Map<String, PredictModel>> entry : predictModels.entrySet()) {
+        for (Map.Entry<Integer, Map<Distance, Map<String, PredictModel>>> entry : predictModelMap.entrySet()) {
             final int enemyId = entry.getKey();
             sb.append("\tenemyId=").append(enemyId).append("{\n");
-            final Map<String, PredictModel> models = entry.getValue();
-            for (PredictModel pm : models.values()) {
-                sb.append("\t\t").append(pm.toString()).append("\n");
+            for (Map.Entry<Distance, Map<String, PredictModel>> distanceEntry : entry.getValue().entrySet()) {
+                final Distance distance = distanceEntry.getKey();
+                sb.append("\t\tdistance=").append(distance).append("{\n");
+                final Map<String, PredictModel> models = distanceEntry.getValue();
+                for (PredictModel pm : models.values()) {
+                    sb.append("\t\t\t").append(pm.toString()).append("\n");
+                }
+                sb.append("\t\t}\n");
             }
             sb.append("\t}\n");
         }
@@ -95,7 +125,7 @@ public class Predictor {
     }
 
     public void onGameStarted(GameStartedEvent gameStartedEvent) {
-        predictModels.clear();
+        predictModelMap.clear();
     }
 
     public void onGameEnded(GameEndedEvent gameEndedEvent) {

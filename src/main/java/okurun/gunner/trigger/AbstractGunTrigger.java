@@ -37,23 +37,37 @@ public abstract class AbstractGunTrigger implements GunTrigger {
         }
         final IBot bot = commander.getBot();
         final Predictor predictor = Predictor.getInstance();
-        final PredictData currentPos = predictor.predict(targetEnemy, bot.getTurnNumber());
-        if (currentPos == null) {
+        final PredictData predictData = predictor.predict(targetEnemy, bot.getTurnNumber());
+        if (predictData == null) {
             return 0;
         }
-        final double distance = bot.distanceTo(currentPos.x, currentPos.y);
 
         double firePower;
-        if (distance < 50) {
+        final double hitRate = predictData.model.getHitRate();
+        if (hitRate > 0.6) {
             firePower = Constants.MAX_FIREPOWER;
-        } else if (distance < 150) {
+        } else if (hitRate > 0.45) {
             firePower = 2.5;
-        } else if (distance < 250) {
+        } else if (hitRate > 0.3) {
             firePower = 2;
-        } else if (distance < 350) {
+        } else if (hitRate > 0.15) {
             firePower = 1.5;
         } else {
             firePower = 1;
+        }
+
+        // 距離に応じて火力を調整
+        final double distance = bot.distanceTo(predictData.x, predictData.y);
+        if (distance < 50) {
+            firePower += 1;
+        } else if (distance < 150) {
+            firePower += 0.5;
+        } else if (distance < 250) {
+            firePower += 0;
+        } else if (distance < 350) {
+            firePower -= 0.5;
+        } else {
+            firePower -= 1;
         }
         final double prevDistance = bot.distanceTo(targetEnemy.x, targetEnemy.y);
         final double diffDistance = distance - prevDistance;
@@ -66,7 +80,7 @@ public abstract class AbstractGunTrigger implements GunTrigger {
         }
         if (diffDistancePerTurn < 0) {
             // 近づいて来ている場合は火力を上げる
-            if (diffDistancePerTurn < Constants.MAX_SPEED * 0.75) {
+            if (diffDistancePerTurn < -Constants.MAX_SPEED * 0.75) {
                 firePower += 1.5;
             } else if (diffDistancePerTurn < -Constants.MAX_SPEED * 0.5) {
                 firePower += 1;
@@ -83,7 +97,10 @@ public abstract class AbstractGunTrigger implements GunTrigger {
                 firePower -= 0.5;
             }
         }
-        return Math.min(Math.max(firePower, Constants.MIN_FIREPOWER), Constants.MAX_FIREPOWER);
+        firePower = Math.min(Math.max(firePower, Constants.MIN_FIREPOWER), Constants.MAX_FIREPOWER);
+        firePower = Math.min(firePower, targetEnemy.energy);
+        firePower = Math.min(firePower, Math.max(bot.getEnergy() -1, 0.1));
+        return firePower;
     }
 
     @Override
