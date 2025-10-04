@@ -159,6 +159,37 @@ public class ArenaMap {
             .orElse(null);
     }
 
+    public double getDistanceToWall(double x, double y, double direction) {
+        double angle = Math.toRadians(direction);
+        double dist = Double.MAX_VALUE;
+
+        // Robocode heading: 0 is North (pos Y), 90 is East (pos X)
+        // dx = sin(angle), dy = cos(angle)
+
+        // To top wall (y = height)
+        if (Math.cos(angle) > 0) {
+            double t = (height - y) / Math.cos(angle);
+            if (t >= 0) dist = Math.min(dist, t);
+        }
+        // To bottom wall (y = 0)
+        if (Math.cos(angle) < 0) {
+            double t = -y / Math.cos(angle);
+            if (t >= 0) dist = Math.min(dist, t);
+        }
+        // To right wall (x = width)
+        if (Math.sin(angle) > 0) {
+            double t = (width - x) / Math.sin(angle);
+            if (t >= 0) dist = Math.min(dist, t);
+        }
+        // To left wall (x = 0)
+        if (Math.sin(angle) < 0) {
+            double t = -x / Math.sin(angle);
+            if (t >= 0) dist = Math.min(dist, t);
+        }
+
+        return dist == Double.MAX_VALUE ? 0 : dist;
+    }
+
     public double[] keepPositionInArena(double[] pos, double[] beforePos) {
         return keepPositionInArena(pos[0], pos[1], beforePos[0], beforePos[1]);
     }

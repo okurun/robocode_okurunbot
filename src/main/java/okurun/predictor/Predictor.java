@@ -46,7 +46,7 @@ public class Predictor {
                 distanceMap.put(distance, new HashMap<>(Map.of(
                     SimplePredictModel.class.getSimpleName(), new SimplePredictModel(commander),
                     MoveHistoryPredictModel.class.getSimpleName(), new MoveHistoryPredictModel(commander),
-                    MoveHistoryRPredictModel.class.getSimpleName(), new MoveHistoryRPredictModel(commander)
+                    PatternMatchingPredictModel.class.getSimpleName(), new PatternMatchingPredictModel(commander)
                 )));
             }
             predictModelMap.put(i, distanceMap);

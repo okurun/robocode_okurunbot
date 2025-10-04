@@ -1,11 +1,12 @@
 package okurun.predictor.model;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-import dev.robocode.tankroyale.botapi.Constants;
 import dev.robocode.tankroyale.botapi.IBot;
 import dev.robocode.tankroyale.botapi.graphics.Color;
 import okurun.Commander;
@@ -14,20 +15,46 @@ import okurun.arenamap.ArenaMap;
 import okurun.predictor.PredictData;
 import okurun.radaroperator.EnemyState;
 
-public class MoveHistoryRPredictModel extends PredictModel {
-    public MoveHistoryRPredictModel(Commander commander) {
+public class PatternMatchingPredictModel extends PredictModel {
+
+    public PatternMatchingPredictModel(Commander commander) {
         super(commander);
     }
 
     private final Map<Integer, PredictData> cache = new HashMap<>();
+    private List<EnemyState> nearestNeighbors = null;
 
     @Override
     public PredictData predict(EnemyState enemyState, int predictTurnNum) {
-        final var arenaMap = ArenaMap.getInstance();
-        List<MovePattern> movePatterns = extractMovePatterns(enemyState);
-        if (movePatterns.size() < 10) {
-            return null;
+        // Find K-Nearest Neighbors (KNN)
+        if (nearestNeighbors == null) {
+            final IBot bot = commander.getBot();
+            final List<EnemyState> historicalData = new ArrayList<>();
+            for (EnemyState state = enemyState.previousState; state != null; state = state.previousState) {
+                if (state.scandTurnNum > bot.getTurnNumber() - 10 || state.scandTurnNum == 0) {
+                    continue;
+                }
+                historicalData.add(state);
+            }
+            // If we don't have enough historical data, we can't predict.
+            if (historicalData.size() < 10) {
+                return null;
+            }
+
+            final EnemyState nearestNeighbor = historicalData.stream()
+                .parallel() // Use parallel stream for performance
+                .min(Comparator.comparingDouble(s -> s.calculateDistance(enemyState)))
+                .orElse(null);
+
+            nearestNeighbors = historicalData.stream()
+                .filter(e -> e.scandTurnNum >= nearestNeighbor.scandTurnNum)
+                .sorted(Comparator.comparingInt(e -> e.scandTurnNum))
+                .limit(20)
+                .collect(Collectors.toList());
         }
+
+
+        // Simulate Future Movement
         PredictData newData = new PredictData(
             enemyState.getPosition(),
             enemyState.heading, enemyState.velocity, enemyState.getTurnDegree(),
@@ -43,6 +70,8 @@ public class MoveHistoryRPredictModel extends PredictModel {
                 enemyState.previousState.scandTurnNum, this
             );
         }
+
+        final ArenaMap arenaMap = ArenaMap.getInstance();
         for (int i = enemyState.scandTurnNum + 1; i <= predictTurnNum; i++) {
             if (cache.containsKey(i)) {
                 prevData = newData;
@@ -50,19 +79,20 @@ public class MoveHistoryRPredictModel extends PredictModel {
                 continue;
             }
             final PredictData tempData = newData;
-            final MovePattern pattern = movePatterns.get(i % movePatterns.size());
+            final EnemyState pattern = nearestNeighbors.get(i % nearestNeighbors.size());
+            final double turnDegree = pattern.getTurnDegree();
             double[] newPos = Util.calcPosition(
                 newData.getPosition(),
                 newData.heading,
                 pattern.velocity,
-                pattern.turnDegree,
+                turnDegree,
                 1
             );
             newPos = arenaMap.keepPositionInArena(newPos, prevData.getPosition());
             newData = new PredictData(
                 newPos,
-                newData.heading + pattern.turnDegree,
-                newData.velocity, pattern.turnDegree,
+                newData.heading + turnDegree,
+                newData.velocity, turnDegree,
                 i, this
             );
             prevData = tempData;
@@ -71,42 +101,14 @@ public class MoveHistoryRPredictModel extends PredictModel {
         return newData;
     }
 
-    private List<MovePattern> extractMovePatterns(EnemyState enemyState) {
-        List<MovePattern> patterns = new ArrayList<>();
-        EnemyState current = enemyState;
-        final IBot bot = commander.getBot();
-        final double bulletSpeed = bot.calcBulletSpeed(Constants.MAX_FIREPOWER);
-        final double distanceToEnemy = bot.distanceTo(enemyState.x, enemyState.y);
-        final int maxPatterns = Math.max(Math.min((int) (distanceToEnemy / bulletSpeed), 30), 10);
-        while (current.previousState != null && patterns.size() < maxPatterns) {
-            if (current.previousState.scandTurnNum == 0) {
-                break;
-            }
-            double velocity = current.velocity;
-            double turnDegree = current.getTurnDegree();
-            patterns.add(new MovePattern(velocity, turnDegree));
-            current = current.previousState;
-        }
-        return patterns.reversed();
-    }
-
-    private static class MovePattern {
-        public final double velocity;
-        public final double turnDegree;
-
-        public MovePattern(double velocity, double turnDegree) {
-            this.velocity = velocity;
-            this.turnDegree = turnDegree;
-        }
-    }
-
     @Override
     public Color getBulletColor() {
-        return Util.ORANGE_COLOR;
+        return Util.BASE_COLOR;
     }
 
     @Override
     public void clearCache() {
         cache.clear();
+        nearestNeighbors = null;
     }
 }

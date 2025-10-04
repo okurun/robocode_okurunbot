@@ -10,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import dev.robocode.tankroyale.botapi.IBot;
 import dev.robocode.tankroyale.botapi.events.*;
 import okurun.Commander;
+import okurun.arenamap.ArenaMap;
 import okurun.radaroperator.action.RadarAction;
 
 public class RadarOperator {
@@ -127,8 +128,10 @@ public class RadarOperator {
 
     public void onScannedBot(ScannedBotEvent scannedBotEvent) {
         final int enemyId = scannedBotEvent.getScannedBotId();
+        final IBot bot = commander.getBot();
+        final ArenaMap arenaMap = ArenaMap.getInstance();
         EnemyState previousState = enemyStates.get(enemyId);
-        enemyStates.put(enemyId, new EnemyState(
+        EnemyState currentState = new EnemyState(
                 enemyId,
                 scannedBotEvent.getX(),
                 scannedBotEvent.getY(),
@@ -136,12 +139,18 @@ public class RadarOperator {
                 scannedBotEvent.getSpeed(),
                 scannedBotEvent.getEnergy(),
                 scannedBotEvent.getTurnNumber(),
+                bot.distanceTo(scannedBotEvent.getX(), scannedBotEvent.getY()),
+                arenaMap.getDistanceToWall(scannedBotEvent.getX(), scannedBotEvent.getY(), scannedBotEvent.getDirection()),
                 previousState
-        ));
+        );
+        enemyStates.put(enemyId, currentState);
+
+        // This loop is to prune the history chain to about 200 entries
         int i = 0;
-        while ((previousState = previousState.previousState) != null) {
-            if (++i >= 30) {
-                previousState.deletePreviousState();
+        EnemyState state = currentState;
+        while ((state = state.previousState) != null) {
+            if (++i >= 200) {
+                state.deletePreviousState();
                 break;
             }
         }
